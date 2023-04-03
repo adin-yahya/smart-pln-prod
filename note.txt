@@ -1,0 +1,10 @@
+Proyek
+- marker = latitude, longitude, address ( sekarang lat, lng, address )
+- year = 2022-01-01 (tetep format tanggal tp bulan sama tanggal 01)
+
+Potential Issue
+- cek fieldRelation => displayName project_id 
+
+users
+- cek rel_
+- cek mapping proyek pas dinonaktifkan (Active harus bilangan bulat)

@@ -1,0 +1,19 @@
+node {
+    checkout scm
+    docker.image('node:12').inside('-u root') {
+        sh 'npm install'
+        sh 'cp src/mode-prod.js src/mode.js'
+        sh 'npm run build'
+        sh 'ls'
+    }
+    
+    docker.image('agung3wi/alpine-rsync:1.1').inside('-u root') {
+         sshagent (credentials: ['zidan-dev']) {
+             sh 'mkdir -p ~/.ssh'
+             sh 'ssh-keyscan -H "pusmanpro.id" > ~/.ssh/known_hosts'
+             sh "rsync -rav --delete ./dist/ pusmanpro@pusmanpro.id:/home/pusmanpro/pusmanpro.id/public/ --exclude=index.php --exclude=.htaccess"
+             //sh "ssh pusmanpro@pusmanpro.id 'rm /home/pusmanpro/pusmanpro.id/resources/views/home.blade.php'"
+             sh "ssh pusmanpro@pusmanpro.id 'mv /home/pusmanpro/pusmanpro.id/public/index.html /home/pusmanpro/pusmanpro.id/resources/views/home.blade.php'"
+         }
+    }
+}
