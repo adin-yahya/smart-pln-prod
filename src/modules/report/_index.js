@@ -1,13 +1,13 @@
 const module = {
   config: {
-    name: 'laporan',
+    name: 'laporan-potensi-isu',
     icon: 'ri-funds-line',
-    desc: 'Pengelolaan Laporan Potensi issue dan rekomendasi mitigasi Pusmanpro',
+    desc: 'Pengelolaan Laporan Potensi isu dan rekomendasi mitigasi Pusmanpro',
     layout: true
   },
   routes: [
     { name: 'potential-issues', label: 'Pelaporan Potensi Isu', icon: 'ri-database-2-fill', path: '/potential-issues', component: () => import('./potential-issues.vue') },
-    { name: 'mitigation-recommendations', label: 'Rekomendasi Mitigasi', icon: 'ri-database-2-fill', path: '/mitigation-recommendations', component: () => import('./mitigation-recommendations.vue') },
+    // { name: 'mitigation-recommendations', label: 'Rekomendasi Mitigasi', icon: 'ri-database-2-fill', path: '/mitigation-recommendations', component: () => import('./mitigation-recommendations.vue') },
     // ==============
     { separator: 'Master Isu & Mitigasi', label: 'Kategori Potensi Isu & Risk Register', name: 'm-issue-categories', icon: 'ri-stack-line', path: '/m-issue-categories', component: () => import('./../master-data/m-issue-categories.vue') },
     { separator: 'Master Isu & Mitigasi', label: 'Daftar Mitigasi', name: 'm-mitigations', icon: 'ri-stack-line', path: '/m-mitigations', component: () => import('./../master-data/m-mitigations.vue') },

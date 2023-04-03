@@ -95,30 +95,6 @@ export default {
           update: 'update-projects',
           delete: 'delete-projects'
         },
-        slave: [
-          {
-            name: 'Potensi Isu Proyek',
-            permission: 'potential-issues',
-            module: 'report/potential-issues',
-            as_param: 'project_id',
-            key_field: 'id',
-            overwrite: {
-              fields: [
-                { rule: '1.methods.list', value: false },
-                { rule: '1.methods.filter', value: false },
-                { rule: '1.methods.create', value: false },
-                { rule: '1.methods.update', value: false },
-                { rule: '1.methods.detail', value: false }
-              ],
-              permission: {
-                create: 'template-forbid-all',
-                read: 'read-potential-issues',
-                update: 'template-forbid-all',
-                delete: 'template-forbid-all'
-              }
-            }
-          }
-        ],
         fields: [
           { id: 'project_name', label: 'Nama Proyek', methods: { list: true, detail: true, create: { validation: ['required'] }, update: { validation: ['required'] }, filter: false } },
           { id: 'assignment_date', label: 'Tanggal Penugasan', methods: { list: { transform: 'longDate' }, detail: { transform: 'longDate' }, create: { type: 'date', class: 'col-auto' }, update: { type: 'date', class: 'col-auto' } } },
