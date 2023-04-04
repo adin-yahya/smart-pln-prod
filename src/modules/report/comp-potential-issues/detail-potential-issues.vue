@@ -67,7 +67,7 @@
           </div>
           <div class="card-body pt-3 position-relative">
             <b-overlay :show="loadingRisk" no-wrap rounded="sm" />
-            <ul v-if="riskList" class="list-unstyled mb-0">
+            <ul v-if="riskList && activeRisk" class="list-unstyled mb-0">
               <li v-for="(r, i) in riskList" :key="i + '-riskList'" @click="activeRisk = r" class="pointer border-1 py-2 rounded-sm">
                 <div class="d-flex">
                   <div :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px h-20px rounded-sm">
@@ -114,6 +114,7 @@
                 </div>
               </li>
             </ul>
+            <div v-else class="h-250px"></div>
           </div>
         </div>
       </div>
@@ -125,9 +126,35 @@
             </h3>
           </div>
           <div class="card-body pt-3 position-relative">
-            <template v-for="(n, i) in treeData">
-              <tree-node :checklist="true" :last="i + 1 === treeData.length" :key="i + '-nodes'" :node="n" />
-            </template>
+            <div class="form-group">
+              <label>Level :</label>
+              <div class="row">
+                <div v-for="(l, i) in levelData" :key="i+'-levelData'" class="col-lg-4">
+                  <label class="option option-plain">
+                    <span class="option-control">
+                      <span class="radio">
+                        <input v-model="createForm.level" type="radio" name="m_option_level" />
+                        <span></span>
+                      </span>
+                    </span>
+                    <span class="option-label">
+                      <span class="option-head">
+                        <span class="option-title">
+                          Level
+                        </span>
+                      </span>
+                      <span class="option-body">
+                        30 days free trial and lifetime free updates
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <span class="title font-weight-bold text-uppercase">Risk Register</span>
+            <div v-for="(n, i) in treeData" class="pl-1" :key="i + '-nodes'">
+              <tree-node @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
+            </div>
           </div>
         </div>
       </div>
@@ -263,7 +290,12 @@ export default {
       loadingCount: 0,
       loadingRisk: false,
       loadingMitigation: false,
-      treeData: null
+      treeData: null,
+      levelData: null,
+      createForm: {
+        level: 3
+      },
+      selectedTree: []
     }
   },
   watch: {
@@ -386,6 +418,14 @@ export default {
     },
     loadTree () {
       this.$_api
+        .get('m_levels/dataset')
+        .then((res) => {
+          this.levelData = res.data
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      this.$_api
         .get('custom/master-issue-mitigations/tree')
         .then((res) => {
           this.treeData = res.data
@@ -394,10 +434,15 @@ export default {
           console.log(err)
         })
     },
+    wrapSelectedData (e) {
+      if (e.selected) this.selectedTree.push(e.data)
+      else this.selectedTree = this.selectedTree.filter((x) => x.id !== e.data.id)
+      console.log(this.selectedTree)
+    },
     bgMitigationStatus (prefix, e) {
-      if (e === 'open') return prefix + '-danger'
+      if (e === 'on_going') return prefix + '-warning'
       else if (e === 'close') return prefix + '-success'
-      else return prefix + '-warning'
+      else return prefix + '-danger'
     }
   }
 }

@@ -46,12 +46,13 @@ Vue.filter('parse', (value, id) => {
         toReturn = value || '-'
         break
       case 'status_code_form':
-        if (value === 'draft') toReturn = 'Draft'
+        if (value === 'na') toReturn = 'Not Applicable'
         else if (value === 'open') toReturn = 'Belum Dimitigasi'
+        else if (value === 'close') toReturn = 'Sudah Dimitigasi'
+        else if (value === 'on_going') toReturn = 'Sedang Dimitigasi'
+        else if (value === 'draft') toReturn = 'Draft'
         else if (value === 'on_review') toReturn = 'Review'
         else if (value === 'on_verification') toReturn = 'Approve'
-        else if (value === 'on_going') toReturn = 'Sedang Dimitigasi'
-        else if (value === 'close') toReturn = 'Sudah Dimitigasi'
         else toReturn = value
         break
       case 'verify':
