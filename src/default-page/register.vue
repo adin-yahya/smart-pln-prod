@@ -131,14 +131,14 @@
               <div class="pb-5" data-wizard-type="step-content" :data-wizard-state="registerStep(2)">
                 <!--begin::Title-->
                 <div class="pt-lg-0 pt-5 pb-15">
-                  <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Role Sistem &amp; Proyek</h3>
+                  <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Unit &amp; Project Site Team</h3>
                   <!-- <div class="text-muted font-weight-bold font-size-h4">Have a Different Address ? <a href="#" class="text-primary font-weight-bolder">Add Address</a></div> -->
                 </div>
                 <!--begin::Title-->
                 <div class="row">
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
-                      <label class="font-size-h6 font-weight-bolder text-dark mb-3">Role Sistem</label>
+                      <label class="font-size-h6 font-weight-bolder text-dark mb-3">Informasi Instansi</label>
                       <div class="radio-list">
                         <label v-for="(r, i) in roleList" :key="i + '-master-role'" class="radio radio-lg" id="popover-pm">
                           <input v-model.number="regForm.role_id" :value="r.id" type="radio" name="radio_role" />
@@ -162,7 +162,7 @@
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Pilih PST</label>
-                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_pst" :appendToBody="true" class="vs-style" :options="datasets.pst" :placeholder="'Proyek'">
+                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_pst" :appendToBody="true" class="vs-style" :options="datasets.pst" :placeholder="'Project Site Team'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>

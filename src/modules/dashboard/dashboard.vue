@@ -64,7 +64,7 @@
         </div>
         <template v-if="mainFilter.activeTab === 'report'">
           <div v-if="api.statistic.data" style="background: linear-gradient(180deg, #2F6879 0%, #174350 100%);border-radius: 8px;" class="mb-3 d-flex flex-wrap align-items-center justify-content-between py-4">
-            <div style="flex: 1 1 0px; border-right: 1px solid #fff" class="pointer text-white min-w-120px pl-5 pr-0">
+            <div style="flex: 1 1 0px; border-right: 1px solid #fff" class="pointer text-white min-w-120px pl-5 mr-5">
               <span @click="redirect('units')" class="d-flex align-items-center font-size-h6 font-weight-bold">
                 <span class="min-w-30px pr-3 text-center font-size-h3">{{ api.statistic.data.unit | parse('number') }}</span>
                 Unit
@@ -80,7 +80,7 @@
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Potensi Isu</span>
-              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_isu | parse('number') }}</span>
+              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.potency_issue[0].total | parse('number') }}</span>
               <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
@@ -163,7 +163,7 @@
           <div class="row mt-5">
             <div class="col-7">
               <div class="mb-5">
-                <h6 class="font-weight-bolder mb-1">Grafik Mitigasi berdasarkan Status</h6>
+                <h6 class="font-weight-bolder mb-1">Grafik Mitigasi Unit berdasarkan Status</h6>
                 <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
               </div>
               <apexchart v-if="api.statusChart.data" :height="280" :options="trendOption" :series="api.statusChart.data"></apexchart>
@@ -463,7 +463,7 @@
           <div class="position-relative mt-6">
             <!-- <hr style="border-style: dashed;" /> -->
           <div v-if="api.treeData.data" class="mb-5">
-            <h6 class="font-weight-bolder mb-1">Potensi Isu & Mitigasi Proyek</h6>
+            <h6 class="font-weight-bolder mb-1">Rekap Potensi Isu & Mitigasi Proyek</h6>
             <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
             <div class="pl-3 mt-3">
               <template v-for="(t, i) in api.treeData.data">
@@ -656,7 +656,7 @@ export default {
           enabledOnSeries: [0]
         },
         stroke: {
-          width: [4, 0, 0, 0]
+          width: [4, 0, 0, 0, 0]
         },
         legend: {
           horizontalAlign: 'left',
@@ -784,10 +784,9 @@ export default {
           end_periode: moment()
             .set('date', 1)
             .format('MMMM YYYY'),
-          activeTab: 'report'
+          activeTab: this.mainFilter.activeTab
         }
       )
-      console.log('reload', this.mainFilter)
     },
     disablePeriodBefore (date) {
       let start = moment(moment(this.mainFilter.start_periode, 'MMMM YYYY').toDate())
