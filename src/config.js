@@ -2,8 +2,7 @@ const app = {
   name: 'SMART',
   fullname: 'Sistem Mitigation All Risk Terintegrasi',
   company: 'Pusat Manajemen Proyek (Pusmanpro)',
-  // guide: 'https://bit.ly/Panduan-PLN',
-  guide: null,
+  guide: 'https://bit.ly/Panduan-SMART-Pusmanpro',
   site: 'https://pln.co.id/',
   code: 'pln-smart',
   logo: {

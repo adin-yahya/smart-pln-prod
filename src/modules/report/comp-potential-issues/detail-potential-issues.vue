@@ -13,6 +13,20 @@
           </span>
         </h3>
         <div class="card-toolbar">
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Belum Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">0%</span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sedang Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">-</span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sudah Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">-</span>
+            </div>
+          </div>
           <a @click="$emit('back')" class="btn btn-outline-primary btn-icon btn-circle"><i class="ri-arrow-go-back-line p-0"></i></a>
         </div>
       </div>
@@ -30,7 +44,7 @@
           </div>
           <div v-if="reportList" class="card-body pt-3 ">
             <ul class="list-unstyled mb-0">
-              <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = l" class="pointer border-1 py-2 rounded-sm px-4">
+              <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
                 <div class="d-flex">
                   <div class="pr-2">{{ i + 1 }}.</div>
                   <div class="flex-fill">
@@ -48,14 +62,14 @@
               </li>
             </ul>
             <hr />
-            <button @click="activeReport.id = 0" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
+            <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
               <i class="ri-add-circle-fill"></i>
               Tambah Laporan Baru
             </button>
           </div>
         </div>
       </div>
-      <div v-if="activeReport && activeReport.id !== 0" class="col-8">
+      <div v-if="activeReport && activeReport.id !== -1" class="col-8">
         <div v-if="activeReport" class="card card-custom">
           <div class="card-header align-items-center min-h-20px border-0 pt-5">
             <h3 class="card-title align-items-start flex-column m-0">
@@ -70,7 +84,7 @@
             <ul v-if="riskList && activeRisk" class="list-unstyled mb-0">
               <li v-for="(r, i) in riskList" :key="i + '-riskList'" @click="activeRisk = r" class="pointer border-1 py-2 rounded-sm">
                 <div class="d-flex">
-                  <div :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px h-20px rounded-sm">
+                  <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px min-w-20px h-20px rounded-sm">
                     &nbsp;
                   </div>
                   <div class="flex-fill">
@@ -90,7 +104,7 @@
                   <span class="font-weight-bold">Daftar Mitigasi</span>
                   <template v-if="mitigationList">
                     <ul class="list-unstyled mb-0">
-                      <li v-for="(m, i) in mitigationList" :key="i + '-mitigationList'" class=" border-1 py-2 rounded-sm">
+                      <li style="border-color: #000" v-for="(m, i) in mitigationList" :key="i + '-mitigationList'" class=" border-1 py-2 rounded-sm">
                         <div class="d-flex py-2">
                           <div class="pr-2">{{ i + 1 }}.</div>
                           <div class="flex-fill">
@@ -100,10 +114,10 @@
                               <span :class="bgMitigationStatus('text', m.status_code)" class="font-size-sm font-weight-bold">{{ m.status_code | parse('status_code_form') }}</span>
                             </div>
                           </div>
-                          <div class="smooth align-self-center">
+                          <div class="smooth align-self-center ml-3">
                             <button @click="openModalDetail(m)" class="btn btn-sm btn-outline-primary font-weight-bold">
-                              <span v-if="m.status_code === 'close' || m.status_code === 'na'">Lihat Histori</span>
-                              <span v-else>Update Status</span>
+                              <span style=" white-space: nowrap;" v-if="m.status_code === 'close' || m.status_code === 'na'">Lihat Histori</span>
+                              <span style=" white-space: nowrap;" v-else>Update Status</span>
                             </button>
                           </div>
                         </div>
@@ -118,7 +132,7 @@
           </div>
         </div>
       </div>
-      <div v-if="activeReport && activeReport.id === 0" class="col-8">
+      <div v-if="activeReport && activeReport.id === -1" class="col-8">
         <div class="card card-custom">
           <div class="card-header align-items-center min-h-20px border-0 pt-5">
             <h3 class="card-title align-items-start flex-column m-0">
@@ -127,34 +141,34 @@
           </div>
           <div class="card-body pt-3 position-relative">
             <div class="form-group">
-              <label>Level :</label>
-              <div class="row">
-                <div v-for="(l, i) in levelData" :key="i+'-levelData'" class="col-lg-4">
-                  <label class="option option-plain">
+              <label class="">Pilih level Mitigasi :</label>
+              <div class="row ml-3">
+                <div v-for="(l, i) in levelData" :key="i + '-levelData'" class="col-lg-4">
+                  <label class="option option-plain mb-0">
                     <span class="option-control">
                       <span class="radio">
-                        <input v-model="createForm.level" type="radio" name="m_option_level" />
+                        <input v-model="createForm.level" :value="l.id" type="radio" name="m_option_level" />
                         <span></span>
                       </span>
                     </span>
                     <span class="option-label">
                       <span class="option-head">
-                        <span class="option-title">
-                          Level
-                        </span>
+                        <span class="option-title">Level {{ l.id }}</span>
                       </span>
                       <span class="option-body">
-                        30 days free trial and lifetime free updates
+                        {{ l.description }}
                       </span>
                     </span>
                   </label>
                 </div>
               </div>
             </div>
-            <span class="title font-weight-bold text-uppercase">Risk Register</span>
+            <span class="">Pilih Risk Register :</span>
             <div v-for="(n, i) in treeData" class="pl-1" :key="i + '-nodes'">
               <tree-node @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
             </div>
+            <hr />
+            <button @click="newReport()" class="btn btn-block btn-success">Simpan & Tambahkan Laporan</button>
           </div>
         </div>
       </div>
@@ -274,6 +288,8 @@
   </section>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
   name: 'detail-potential-issues',
   props: ['id'],
@@ -305,7 +321,7 @@ export default {
       handler (e) {
         if (e) {
           this.activeRisk = null
-          if (e.id === 0) {
+          if (e.id === -1) {
             this.loadTree()
           } else {
             this.loadRisk(e.id)
@@ -347,7 +363,7 @@ export default {
         .get('report-potential-issues/dataset', { project_id: this.id })
         .then((res) => {
           this.reportList = res.data
-          if (!this.activeReport) this.activeReport = res.data[0]
+          if (!this.activeReport || this.activeReport.id === -1) this.activeReport = res.data[0]
           this.loadingCount++
         })
         .catch((err) => {
@@ -404,13 +420,11 @@ export default {
         .post('custom/potency-issue/mitigation/update-status', form)
         .then((res) => {
           this.getAllData()
-          // let mitIndex = this.mitigationList.findIndex(x => x.id === id)
-          // this.$set(this.mitigationList, mitIndex, res.data)
-
-          // this.$set(this.activeRisk, 'status_code', res.potency_issue_status_code)
-
+          let mitIndex = this.mitigationList.findIndex((x) => x.id === id)
+          this.$set(this.mitigationList, mitIndex, res.data)
+          this.$set(this.activeRisk, 'status_code', res.potency_issue_status_code)
+          this.$set(this.activeReport, 'status_code', res.report_status_code)
           this.$bvModal.hide('form-mitigation-status')
-          console.log(res)
         })
         .catch((err) => {
           this.$_alert.error(err)
@@ -437,7 +451,20 @@ export default {
     wrapSelectedData (e) {
       if (e.selected) this.selectedTree.push(e.data)
       else this.selectedTree = this.selectedTree.filter((x) => x.id !== e.data.id)
-      console.log(this.selectedTree)
+    },
+    newReport () {
+      let form = Object.assign({}, this.createForm)
+      form.project_id = this.id
+      form.date = moment(new Date()).format('YYYY-MM-DD')
+      form.data = this.selectedTree
+      this.$_api
+        .post('custom/potency-issue/create', form)
+        .then((res) => {
+          this.getAllData()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
     bgMitigationStatus (prefix, e) {
       if (e === 'on_going') return prefix + '-warning'
