@@ -75,7 +75,7 @@
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Potensi Isu</span>
-              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.potency_issue[0].total | parse('number') }}</span>
+              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_isu | parse('number') }}</span>
               <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
@@ -124,7 +124,7 @@
           </div>
           <div v-if="api.statistic.data" class="row mb-3">
             <div class="col-4">
-              <div @click="redirect('potential-issues', {status_code: 'open'})" class="card card-custom pointer bg-danger card-stretch">
+              <div class="card card-custom bg-danger card-stretch">
                 <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
@@ -137,7 +137,7 @@
               </div>
             </div>
             <div class="col-4 pl-0">
-              <div @click="redirect('potential-issues', {status_code: 'on_going'})" class="card card-custom pointer bg-warning card-stretch">
+              <div class="card card-custom bg-warning card-stretch">
                 <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
@@ -150,7 +150,7 @@
               </div>
             </div>
             <div class="col-4 pl-0">
-              <div @click="redirect('potential-issues', {status_code: 'close'})" class="card card-custom pointer bg-success card-stretch">
+              <div class="card card-custom bg-success card-stretch">
                 <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
@@ -423,67 +423,6 @@
               </table>
             </div>
           </div>
-          <div class="position-relative mt-6">
-            <b-overlay :show="api.potentialTable.isLoading" no-wrap />
-            <div class="mb-5">
-              <h6 class="font-weight-bolder mb-1">
-                Detail Monitoring Potensi Isu Proyek
-                <template v-if="api.potentialTable.params.project_id">- {{ api.projectTable.data.filter((x) => x.id === api.potentialTable.params.project_id)[0].name }}</template>
-              </h6>
-              <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hovered table-bordered">
-                <thead class="bg-light-primary">
-                  <tr>
-                    <th class="text-center v-center" rowspan="2">Proyek</th>
-                    <th class="text-center v-center" rowspan="2">Kategori Isu</th>
-                    <th class="text-center v-center" rowspan="2">Risk Register</th>
-                    <th class="text-center v-center" rowspan="2">Sub Risk Register</th>
-                    <th class="text-center v-center" colspan="2">Status</th>
-                  </tr>
-                  <tr>
-                    <th class="text-center nowrap-table">Status Mitigasi</th>
-                    <th class="text-center nowrap-table">Progres Aktifitas</th>
-                  </tr>
-                </thead>
-                <tbody v-if="api.potentialTable.data">
-                  <template v-for="(d, i) in api.potentialTable.data">
-                    <tr :key="i + '-api.unitTable.data'">
-                      <td>
-                        <div class="text-line-2">{{ d.rel_project_id }}</div>
-                      </td>
-                      <td>
-                        <div class="text-line-2">{{ d.rel_category_id }}</div>
-                      </td>
-                      <td>
-                        <div class="text-line-2">{{ d.rel_issue_id }}</div>
-                      </td>
-                      <td>
-                        <div class="text-line-2">{{ d.rel_sub_issue_id }}</div>
-                      </td>
-                      <td class="nowrap-table text-center v-center">
-                        <span :class="{ 'badge badge-danger': d.status_code === 'open', 'badge badge-warning': d.status_code === 'on_going', 'badge badge-success': d.status_code === 'close' }">{{ d.status_code | parse('status_code_form') }}</span>
-                      </td>
-                      <td class="nowrap-table text-center v-center">
-                        <span
-                          :class="{
-                            'badge badge-primary': d.current_step === 'on_validation',
-                            'badge badge-info': d.current_step === 'on_review',
-                            'badge badge-warning': d.current_step === 'on_verification',
-                            'badge badge-success': d.current_step === 'close',
-                            'badge badge-danger': d.current_step === 'reported' || d.current_step === 'on_mitigation',
-                          }"
-                        >
-                          {{ d.current_step | parse('current_step') }}
-                        </span>
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </template>
       </div>
     </div>
@@ -574,8 +513,7 @@ export default {
         mapData: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'projects/dataset', builder: 'buildMapProperty' },
         unitTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-units', builder: null },
         pstTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-pst', builder: null },
-        projectTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-projects', builder: null },
-        potentialTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue', builder: null }
+        projectTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-projects', builder: null }
       },
       mapGroup: [
         { label: 'Berdasarkan Unit', code: 'rel_unit_id' },

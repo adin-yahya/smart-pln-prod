@@ -14,7 +14,7 @@
           <div class="d-flex flex-column-fluid flex-column flex-center">
             <div class="text-left pb-20">
               <h2 class="text-center font-weight-bolder text-dark font-size-h2 font-size-h1-lg mb-10">Proses Persetujuan</h2>
-              <p class="font-weight-bold font-size-h5 text-muted">Saat ini data anda sedang dalam proses persetujuan oleh Admin Departemen</p>
+              <p class="font-weight-bold font-size-h5 text-muted">Saat ini data anda sedang dalam proses persetujuan oleh Admin Pusmanpro</p>
               <!-- <p class="font-weight-bold font-size-h5 text-muted">Konfirmasi persetujuan akan terkirim otomatis ke email anda dalam kurun waktu 2x24 jam.</p> -->
               <p class="font-weight-bold font-size-h5 text-muted">Untuk informasi atau pertanyaan lebih lanjut, silahkan menuju Narahubung berikut :</p>
               <!-- <hr class="mt-15"> -->

@@ -199,13 +199,13 @@ export default {
           { id: 'created_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           {
-            id: 'register_department_id',
-            label: 'Pendaftaran Departemen',
-            methods: { list: { view_data: 'rel_register_department_id' }, detail: { view_data: 'rel_register_department_id' }, create: false, update: false, filter: false }
+            id: 'register_unit_id',
+            label: 'Pendaftaran Unit',
+            methods: { list: { view_data: 'rel_register_unit_id' }, detail: { view_data: 'rel_register_unit_id' }, create: false, update: false, filter: false }
           },
           {
             id: 'register_pst_id',
-            label: 'Pendaftaran Proyek',
+            label: 'Pendaftaran PST',
             methods: { list: { view_data: 'rel_register_pst_id' }, detail: { view_data: 'rel_register_pst_id' }, create: false, update: false, filter: false }
           }
         ]
