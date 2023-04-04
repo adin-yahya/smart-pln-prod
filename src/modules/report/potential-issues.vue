@@ -31,29 +31,6 @@ export default {
         },
         fields: [
           {
-            id: 'id',
-            label: 'Proyek',
-            methods: {
-              list: { view_data: 'project_name' },
-              detail: { view_data: 'project_name' },
-              create: false,
-              update: false,
-              filter: {
-                setter: 'projects',
-                getter: 'projects',
-                type: 'lookup-radio',
-                class: 'col-auto min-w-250px',
-                option: {
-                  list_pointer: {
-                    label: 'project_name',
-                    code: 'id',
-                    display: ['ruptl_code', 'project_name']
-                  }
-                }
-              }
-            }
-          },
-          {
             id: 'unit_id',
             label: 'Unit Supervisor',
             methods: {
@@ -99,9 +76,32 @@ export default {
               }
             }
           },
-          { id: 'potency_issue_open', label: 'Belum Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
-          { id: 'potency_issue_on_going', label: 'Sedang Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
-          { id: 'potency_issue_close', label: 'Sudah Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          {
+            id: 'id',
+            label: 'Proyek',
+            methods: {
+              list: { view_data: 'project_name' },
+              detail: { view_data: 'project_name' },
+              create: false,
+              update: false,
+              filter: {
+                setter: 'projects',
+                getter: 'projects',
+                type: 'lookup-radio',
+                class: 'col-auto min-w-250px',
+                option: {
+                  list_pointer: {
+                    label: 'project_name',
+                    code: 'id',
+                    display: ['ruptl_code', 'project_name']
+                  }
+                }
+              }
+            }
+          },
+          { id: 'report_open', label: 'Belum Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          { id: 'report_on_going', label: 'Sedang Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          { id: 'report_close', label: 'Sudah Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
           { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_at', label: 'Dibuat', methods: { list: false, detail: false, create: false, update: false, filter: false } },

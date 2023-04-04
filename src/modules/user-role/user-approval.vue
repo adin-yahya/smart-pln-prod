@@ -2,15 +2,18 @@
   <tas-base-crud :config="config">
     <template v-slot:detail-footer="data">
       <div v-if="data.rowData" class="row">
-        <!-- <div class="col-lg-12" v-if="$_sys.isAllowed(mappingUnit.permission)">
-          <mapping-input :alert="['Non-Aktifkan Unit','Proyek dibawah Unit juga akan di non-aktifkan']" @change="requestReload(data.rowData.id)" :title="mappingUnit.title" :getter="mappingUnit.getter" :setter="mappingUnit.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingUnit.readonly" :display="mappingUnit.display" :setter_id="mappingUnit.setter_id" :key_value="mappingUnit.key_value" />
-        </div> -->
-        <div class="col-lg-12 mt-5" v-if="$_sys.isAllowed(mappingPST.permission)">
-          <mapping-input :refresh="refreshToken" :title="mappingPST.title" :getter="mappingPST.getter" :setter="mappingPST.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingPST.readonly" :display="mappingPST.display" :setter_id="mappingPST.setter_id" :key_value="mappingPST.key_value" />
+        <div class="col-4">
+          <div class="card text-left">
+            <div class="card-body">
+              <h6 class="card-label font-weight-bolder text-dark mb-4">Verifikasi Pengguna</h6>
+              <span class="d-block mb-5">Anda akan memberikan persetujuan kepada pengguna dengan username <b>{{data.rowData.username}}</b>. Silahkan tolak pengguna jika data tidak sesuai</span>
+              <div class="d-flex mt-3">
+                <button @click="setUserStatus(data.rowData.id, 'user_active')" class="col mr-1 btn btn-light-primary">Setujui</button>
+                <button @click="setUserStatus(data.rowData.id, 'user_rejected')" class="col ml-1 btn btn-outline-danger">Tolak</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- <div class="col-lg-12 mt-5" v-if="$_sys.isAllowed(mappingProjects.permission)">
-          <mapping-input :refresh="refreshToken" :title="mappingProjects.title" :getter="mappingProjects.getter" :setter="mappingProjects.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingProjects.readonly" :display="mappingProjects.display" :setter_id="mappingProjects.setter_id" :key_value="mappingProjects.key_value" />
-        </div> -->
       </div>
     </template>
   </tas-base-crud>
@@ -18,24 +21,25 @@
 
 <script>
 export default {
-  name: 'crud-users',
+  name: 'crud-users-approval-list',
   data () {
     return {
       config: {
-        title: 'Daftar Pengguna',
-        model_api: 'users',
+        title: 'Verifikasi Pengguna',
         getter: 'users',
         setter: 'users',
-        pk_field: 'employee_id',
         filter_api: {
-          status_code: 'user_active'
+          status_code: 'email_verified'
         },
-        export: true,
+        custom_api: {
+          list: 'custom/users-verification/list'
+        },
+        pk_field: 'fullname',
         permission: {
-          create: 'create-users',
-          read: 'view-users',
-          update: 'update-users',
-          delete: 'delete-users'
+          create: false,
+          read: 'verify-users',
+          update: false,
+          delete: false
         },
         fields: [
           {
@@ -205,60 +209,35 @@ export default {
           { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } }
+          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          {
+            id: 'register_department_id',
+            label: 'Pendaftaran Departemen',
+            methods: { list: { view_data: 'rel_register_department_id' }, detail: { view_data: 'rel_register_department_id' }, create: false, update: false, filter: false }
+          },
+          {
+            id: 'register_pst_id',
+            label: 'Pendaftaran Proyek',
+            methods: { list: { view_data: 'rel_register_pst_id' }, detail: { view_data: 'rel_register_pst_id' }, create: false, update: false, filter: false }
+          }
         ]
-      },
-      refreshToken: 0,
-      projectFilter: {
-        unit_id: null
-      },
-      mappingPST: {
-        title: 'PST Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-pst',
-        setter: 'custom/mapping-users-pst',
-        display: ['pst'],
-        key_value: 'active',
-        setter_id: 'pst_id',
-        readonly: false
-      },
-      mappingProjects: {
-        title: 'Proyek Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-projects',
-        setter: 'custom/mapping-users-projects',
-        display: ['ruptl_code', 'project_name'],
-        key_value: 'active',
-        setter_id: 'project_id',
-        readonly: false
-      },
-      mappingUnit: {
-        title: 'Unit Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-units',
-        setter: 'custom/mapping-users-units',
-        display: ['unit_name'],
-        key_value: 'active',
-        setter_id: 'unit_id',
-        readonly: false
       }
     }
   },
   methods: {
-    requestReload (data) {
-      this.refreshToken++
-    },
-    changeUserStatus (data) {
-      data.status_code = 'user_nonactive'
-      this.$_api.post('users/active-deactive', data).then(res => {
+    setUserStatus (id, code) {
+      let form = {
+        user_id: id,
+        status_code: code
+      }
+      this.$_api.post('approval-user', form).then(res => {
         this.$_alert.success(null, res.message)
-        this.$children[0].$children[1].getData(null)
+        this.$router.push({ name: 'verifikasi-pengguna', query: { view: 'list' } })
       }, err => {
         this.$_alert.error(err)
       })
     }
   }
-
 }
 </script>
 

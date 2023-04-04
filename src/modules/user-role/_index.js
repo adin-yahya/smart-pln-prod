@@ -7,7 +7,10 @@ const module = {
   },
   routes: [
     { name: 'tenaga-kerja', icon: 'ri-group-line', path: '/employees', component: () => import('./employees.vue') },
-    { name: 'daftar-pengguna', icon: 'ri-group-line', path: '/users', component: () => import('./users.vue') },
+
+    { separator: 'Pengguna', name: 'daftar-pengguna', icon: 'ri-group-line', path: '/users', component: () => import('./users.vue') },
+    { separator: 'Pengguna', name: 'verifikasi-pengguna', icon: 'ri-group-line', path: '/user-approval', component: () => import('./user-approval.vue') },
+    { separator: 'Pengguna', name: 'pengguna-non-aktif', icon: 'ri-group-line', path: '/user-register', component: () => import('./user-register.vue') },
 
     { separator: 'Access Config', name: 'role-group', icon: 'ri-stack-line', path: '/role-group', component: () => import('./role-group.vue') },
     { separator: 'Access Config', name: 'role', icon: 'ri-stack-line', path: '/role', component: () => import('./role.vue') },

@@ -48,7 +48,7 @@
                     </div>
                     <div class="wizard-label">
                       <h3 class="wizard-title">Instansi</h3>
-                      <div class="wizard-desc">Proyek &amp; Role</div>
+                      <div class="wizard-desc">Unit &amp; PST</div>
                     </div>
                     <span class="svg-icon pl-6">
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -98,29 +98,30 @@
                   <div class="col-xl-6">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Nama Lengkap</label>
-                      <input v-model="regForm.fullname" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan nama lengkap Anda">
+                      <input v-model="regForm.fullname" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan nama lengkap Anda" />
                     </div>
                   </div>
                   <div class="col-xl-6">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
-                      <input @input="$set(apiValidate, 'email', true)" @change="checkAvail('email', regForm.email)" v-model="regForm.email" type="email" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan alamat E-mail Anda">
-                      <span v-if="apiValidate.email" class="form-text text-danger"> Email salah / sudah terdaftar, gunakan email lain </span>
+                      <input @input="$set(apiValidate, 'email', true)" @change="checkAvail('email', regForm.email)" v-model="regForm.email" type="email" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan alamat E-mail Anda" />
+                      <span v-if="apiValidate.email" class="form-text text-danger">Email salah / sudah terdaftar, gunakan email lain</span>
                     </div>
                   </div>
                   <div class="col-xl-6">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Username</label>
-                      <input @input="$set(apiValidate, 'username', true)" @change="checkAvail('username', regForm.username)" v-model="regForm.username" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan username Anda">
-                      <span v-if="apiValidate.username" class="form-text text-danger"> Username sudah terdaftar, gunakan username lain </span>
+                      <input @input="$set(apiValidate, 'username', true)" @change="checkAvail('username', regForm.username)" v-model="regForm.username" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Ketikkan username Anda" />
+                      <span v-if="apiValidate.username" class="form-text text-danger">Username sudah terdaftar, gunakan username lain</span>
                     </div>
                   </div>
                   <div class="col-xl-6">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Password</label>
-                      <input v-model="regForm.password" :type="showPassword? 'text':'password'" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="8 - 16 Karakter">
+                      <input v-model="regForm.password" :type="showPassword ? 'text' : 'password'" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="8 - 16 Karakter" />
                       <div @click="showPassword = !showPassword" class="d-flex align-items-center justify-content-end">
-                        <i class="ri-lock-password-line"></i> <span class="form-text text-muted ml-2 pointer"> {{ showPassword? 'Sembunyikan Password': 'Tampilkan Password' }} </span>
+                        <i class="ri-lock-password-line"></i>
+                        <span class="form-text text-muted ml-2 pointer">{{ showPassword ? 'Sembunyikan Password' : 'Tampilkan Password' }}</span>
                       </div>
                     </div>
                   </div>
@@ -139,11 +140,12 @@
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark mb-3">Role Sistem</label>
                       <div class="radio-list">
-                        <label v-for="(r,i) in roleList" :key="i+'-master-role'" class="radio radio-lg" id="popover-pm">
-                          <input v-model.number="regForm.role_id" :value="r.id" type="radio" name="radio_role">
+                        <label v-for="(r, i) in roleList" :key="i + '-master-role'" class="radio radio-lg" id="popover-pm">
+                          <input v-model.number="regForm.role_id" :value="r.id" type="radio" name="radio_role" />
                           <span></span>
                           <div>
-                            <span class="d-block font-weight-bold">{{ r.role_name }}</span> {{ r.description }}
+                            <span class="d-block font-weight-bold">{{ r.role_name }}</span>
+                            {{ r.description }}
                           </div>
                         </label>
                       </div>
@@ -151,16 +153,16 @@
                   </div>
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
-                      <label class="font-size-h6 font-weight-bolder text-dark">Pilih Departemen</label>
-                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_department" :appendToBody="true" class="vs-style" :options="datasets.department" :placeholder="'Departemen'">
+                      <label class="font-size-h6 font-weight-bolder text-dark">Pilih Unit</label>
+                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_department" :appendToBody="true" class="vs-style" :options="datasets.unit" :placeholder="'Departemen'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>
                   </div>
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
-                      <label class="font-size-h6 font-weight-bolder text-dark">Pilih Proyek</label>
-                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_project" :appendToBody="true" class="vs-style" :options="datasets.project" :placeholder="'Proyek'">
+                      <label class="font-size-h6 font-weight-bolder text-dark">Pilih PST</label>
+                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_project" :appendToBody="true" class="vs-style" :options="datasets.pst" :placeholder="'Proyek'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>
@@ -168,7 +170,7 @@
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Jabatan</label>
-                      <input v-model="regForm.job_position" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Jabatan Anda">
+                      <input v-model="regForm.job_position" type="text" class="form-control form-control-solid h-auto py-5 px-4 border-0 rounded-lg font-size-h6" placeholder="Jabatan Anda" />
                     </div>
                   </div>
                 </div>
@@ -190,11 +192,11 @@
                 </div>
                 <!--end::Section-->
                 <!--begin::Section-->
-                <h4 class="font-weight-bolder mb-3">Role &amp; Proyek:</h4>
+                <h4 class="font-weight-bolder mb-3">Unit &amp; PST:</h4>
                 <div class="text-dark-50 font-weight-bold line-height-lg mb-8">
-                  <div v-if="regForm.role_id">{{ roleList.filter(x=> x.id == regForm.role_id)[0]['role_name'] }}</div>
-                  <div v-if="temp_department">Departemen {{ temp_department.label }}</div>
-                  <div v-if="temp_project">Proyek {{ temp_project.label }}</div>
+                  <div v-if="regForm.role_id">{{ roleList.filter((x) => x.id == regForm.role_id)[0]['role_name'] }}</div>
+                  <div v-if="temp_department"> Unit {{ temp_department.label }}</div>
+                  <div v-if="temp_project">PST {{ temp_project.label }}</div>
                   <div>Jabatan {{ regForm.job_position }}</div>
                 </div>
                 <!--end::Section-->
@@ -202,7 +204,16 @@
                 <!-- <h4 class="font-weight-bolder mb-3">Support Channels:</h4> -->
                 <div class="text-dark-50 font-weight-bold line-height-lg mb-8 mt-10">
                   <div>Kami akan mengirimkan email untuk mengonfirmasi alamat email Anda, Silahkan lakukan verifikasi untuk melanjutkan ke proses selanjutnya</div>
-                  <div>Terimakasih, <br><br>Tim QHSE Adhi Karya V2<br> PT ADHI KARYA (Persero) Tbk.<br> South Building Jalan Raya Pasar Minggu KM. 18<br> Jakarta Selatan 12510 <br>Indonesia </div>
+                  <div>
+                    Terimakasih,
+                    <br />
+                    <br />
+                    {{ $_config.fullname }}
+                    <br />
+                    {{ $_config.company }}
+                    <br />
+                    Indonesia
+                  </div>
                 </div>
                 <!--end::Section-->
               </div>
@@ -219,9 +230,20 @@
                         </g>
                       </svg>
                       <!--end::Svg Icon-->
-                    </span>Kembali ke Halaman Login
+                    </span>
+                    Kembali ke Halaman Login
                   </router-link>
-                  <button @click="(e)=> { e.preventDefault(); step-- }" v-if="step != 1" class="btn btn-light-primary font-weight-bolder font-size-h6 pr-8 pl-6 py-4 my-3 mr-3" data-wizard-type="action-prev">
+                  <button
+                    @click="
+                      (e) => {
+                        e.preventDefault()
+                        step--
+                      }
+                    "
+                    v-if="step != 1"
+                    class="btn btn-light-primary font-weight-bolder font-size-h6 pr-8 pl-6 py-4 my-3 mr-3"
+                    data-wizard-type="action-prev"
+                  >
                     <span class="svg-icon svg-icon-md mr-2">
                       <!--begin::Svg Icon | path:/metronic/theme/html/demo3/dist/assets/media/svg/icons/Navigation/Left-2.svg-->
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -232,11 +254,29 @@
                         </g>
                       </svg>
                       <!--end::Svg Icon-->
-                    </span>Sebelumnya </button>
+                    </span>
+                    Sebelumnya
+                  </button>
                 </div>
                 <div>
-                  <button type="button" @click="submitForm()" :disabled="isLoadingSubmit" v-if="step == 3" class="btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 d-flex align-items-center"> Kirim Pendaftaran  <b-spinner v-if="isLoadingSubmit" variant="light" label="Spinning" class="ml-3"></b-spinner></button>
-                  <button @click="(e)=> { e.preventDefault(); step++ }" v-if="step != 3" :disabled="validateStep" class="btn btn-primary font-weight-bolder font-size-h6 pl-8 pr-4 py-4 my-3" data-wizard-type="action-next">Selanjutnya <span class="svg-icon svg-icon-md ml-2">
+                  <button type="button" @click="submitForm()" :disabled="isLoadingSubmit" v-if="step == 3" class="btn btn-primary font-weight-bolder font-size-h6 py-4 my-3 d-flex align-items-center">
+                    Kirim Pendaftaran
+                    <b-spinner v-if="isLoadingSubmit" variant="light" label="Spinning" class="ml-3"></b-spinner>
+                  </button>
+                  <button
+                    @click="
+                      (e) => {
+                        e.preventDefault()
+                        step++
+                      }
+                    "
+                    v-if="step != 3"
+                    :disabled="validateStep"
+                    class="btn btn-primary font-weight-bolder font-size-h6 pl-8 pr-4 py-4 my-3"
+                    data-wizard-type="action-next"
+                  >
+                    Selanjutnya
+                    <span class="svg-icon svg-icon-md ml-2">
                       <!--begin::Svg Icon | path:/metronic/theme/html/demo3/dist/assets/media/svg/icons/Navigation/Right-2.svg-->
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -263,10 +303,12 @@
           </div>
           <div class="pt-lg-0 pt-5 pb-15">
             <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Pendaftaran Selesai</h3>
-            <div class="text-muted font-weight-bold font-size-h4">Silahkan periksa Email Anda, atau <router-link :to="{ path: '/login' }" class="text-primary font-weight-bolder">Ke Halaman Login </router-link>
+            <div class="text-muted font-weight-bold font-size-h4">
+              Silahkan periksa Email Anda, atau
+              <router-link :to="{ path: '/login' }" class="text-primary font-weight-bolder">Ke Halaman Login</router-link>
             </div>
           </div>
-          <img src="/static/img/qhse/no-data.svg" alt="" sizes="" srcset="">
+          <img src="/static/img/qhse/no-data.svg" alt="" sizes="" srcset="" />
         </template>
       </div>
       <!--end::Container-->
@@ -276,7 +318,16 @@
     <div class="login-aside order-1 order-lg-2 bgi-no-repeat bgi-position-x-right">
       <div class="login-conteiner bgi-no-repeat bgi-position-x-right bgi-position-y-bottom" style="background-image: url(/static/img/default/register-visual.svg);">
         <!--begin::Aside title-->
-        <h3 class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display1-lg text-white">QHSE<br>Adhi Karya<br>Persero<br>Tbk.</h3>
+        <h3 class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display3-lg text-white">
+          {{ $_config.name }}
+          <br />
+          Sistem Mitigation
+          <br />
+          All Risk Terintegrasi
+          <br />
+          <br />
+          PUSMANPRO
+        </h3>
         <!--end::Aside title-->
       </div>
     </div>
@@ -303,8 +354,8 @@ export default {
         job_position: null
       },
       datasets: {
-        department: [],
-        project: []
+        unit: [],
+        pst: []
       },
       temp_department: null,
       temp_project: null,
@@ -340,31 +391,41 @@ export default {
     checkAvail (prop, value) {
       let data = {}
       data[prop] = value
-      this.$_api.get('/no-auth/find-user-by-username-email', data).then(res => {
-        this.$set(this.apiValidate, prop, res)
-      })
+      this.$_api
+        .get('/no-auth/find-user-by-username-email', data)
+        .then((res) => {
+          this.$set(this.apiValidate, prop, !res.success)
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$set(this.apiValidate, prop, true)
+        })
     },
     getRole () {
-      this.$_api.dataset('/no-auth/role-register').then(res => {
+      this.$_api.dataset('/no-auth/role-register').then((res) => {
         this.roleList = res.data
       })
     },
     getDepartment () {
-      this.$_api.dataset('/no-auth/departments').then(res => {
-        let data = res.data.map(x => { return { label: x.department_name, code: x.id } })
-        this.$set(this.datasets, 'department', data)
+      this.$_api.dataset('/no-auth/units').then((res) => {
+        let data = res.data.map((x) => {
+          return { label: x.name, code: x.id }
+        })
+        this.$set(this.datasets, 'unit', data)
       })
     },
     getProject (deptID) {
       this.temp_project = null
-      this.$set(this.regForm, 'project_id', null)
+      this.$set(this.regForm, 'pst_id', null)
       if (deptID.code) {
         let filter = {
-          department_id: deptID.code
+          unit_id: deptID.code
         }
-        this.$_api.dataset('/no-auth/projects', filter).then(res => {
-          let data = res.data.map(x => { return { label: x.project_name, code: x.id } })
-          this.$set(this.datasets, 'project', data)
+        this.$_api.dataset('/no-auth/pst', filter).then((res) => {
+          let data = res.data.map((x) => {
+            return { label: x.name, code: x.id }
+          })
+          this.$set(this.datasets, 'pst', data)
         })
       }
     },
@@ -374,10 +435,16 @@ export default {
     },
     submitForm () {
       this.isLoadingSubmit = true
-      this.$_api.post('/register', this.regForm).then(res => {
-        this.finishRegister = true
-        this.isLoadingSubmit = false
-      }).catch((err) => { this.$_alert.error(err); this.isLoadingSubmit = false })
+      this.$_api
+        .post('/register', this.regForm)
+        .then((res) => {
+          this.finishRegister = true
+          this.isLoadingSubmit = false
+        })
+        .catch((err) => {
+          this.$_alert.error(err)
+          this.isLoadingSubmit = false
+        })
     }
   }
 }
@@ -397,31 +464,15 @@ export default {
     -ms-flex-align: center;
     align-items: center;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step {
     padding: 0.75rem 0;
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease,
-      -webkit-box-shadow 0.15s ease;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
     margin-bottom: 1.5rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-wrapper {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-wrapper {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -429,13 +480,7 @@ export default {
     -ms-flex-align: center;
     align-items: center;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-icon {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -445,51 +490,26 @@ export default {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease,
-      -webkit-box-shadow 0.15s ease;
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
     width: 46px;
     height: 46px;
     border-radius: 12px;
     background-color: #f3f6f9;
     margin-right: 1rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-icon
-    .wizard-check {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon .wizard-check {
     display: none;
     font-size: 1.4rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-icon
-    .wizard-number {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon .wizard-number {
     font-weight: 600;
     color: #3f4254;
     font-size: 1.35rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-label {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -501,161 +521,59 @@ export default {
     -ms-flex-pack: center;
     justify-content: center;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-label
-    .wizard-title {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
     color: #181c32;
     font-weight: 600;
     font-size: 1.24rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-label
-    .wizard-desc {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-desc {
     color: #b5b5c3;
     font-size: 0.925rem;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='done']
-    .wizard-icon {
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease,
-      -webkit-box-shadow 0.15s ease;
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='done'] .wizard-icon {
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
     background-color: #e1f0ff;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='done']
-    .wizard-icon
-    .wizard-check {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='done'] .wizard-icon .wizard-check {
     color: #3699ff;
     display: inline-block;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='done']
-    .wizard-icon
-    .wizard-number {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='done'] .wizard-icon .wizard-number {
     display: none;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='done']
-    .wizard-label
-    .wizard-title {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='done'] .wizard-label .wizard-title {
     color: #b5b5c3;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='done']
-    .wizard-label
-    .wizard-desc {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='done'] .wizard-label .wizard-desc {
     color: #d1d3e0;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current'] {
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease,
-      -webkit-box-shadow 0.15s ease;
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] {
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current']
-    .wizard-icon {
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease,
-      border-color 0.15s ease, box-shadow 0.15s ease,
-      -webkit-box-shadow 0.15s ease;
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] .wizard-icon {
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
     background-color: #e1f0ff;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current']
-    .wizard-icon
-    .wizard-check {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] .wizard-icon .wizard-check {
     color: #3699ff;
     display: none;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current']
-    .wizard-icon
-    .wizard-number {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] .wizard-icon .wizard-number {
     color: #3699ff;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current']
-    .wizard-label
-    .wizard-title {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] .wizard-label .wizard-title {
     color: #181c32;
   }
-  .login.login-4
-    .login-container
-    .login-content
-    .wizard-nav
-    .wizard-steps
-    .wizard-step[data-wizard-state='current']
-    .wizard-label
-    .wizard-desc {
+  .login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state='current'] .wizard-label .wizard-desc {
     color: #b5b5c3;
   }
   .login.login-4 .login-container .login-content.login-content-signup {
@@ -663,11 +581,7 @@ export default {
   }
   .login.login-4 .login-aside {
     /* background: linear-gradient(147.04deg, #ca7b70 0.74%, #5a2119 99.61%); */
-    background: linear-gradient(
-      0deg,
-      rgba(0, 180, 227, 1) 0%,
-      rgba(0, 155, 189, 1) 100%
-    );
+    background: linear-gradient(0deg, rgba(0, 180, 227, 1) 0%, rgba(0, 155, 189, 1) 100%);
     width: 700px;
   }
   .login.login-4 .login-aside .login-conteiner {
@@ -719,13 +633,7 @@ export default {
     .login.login-4 .login-container .wizard-nav .wizard-steps .wizard-step {
       width: 100%;
     }
-    .login.login-4
-      .login-container
-      .wizard-nav
-      .wizard-steps
-      .wizard-step
-      .wizard-wrapper
-      .svg-icon {
+    .login.login-4 .login-container .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .svg-icon {
       display: none;
     }
     .login.login-4 .login-container .login-content {

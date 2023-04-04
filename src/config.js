@@ -27,7 +27,7 @@ const app = {
     ios: 'https://www.apple.com/id/app-store/'
   },
   options: {
-    allowRegister: false,
+    allowRegister: true,
     forgetPassword: false,
     autofill: false,
     myAction: false,

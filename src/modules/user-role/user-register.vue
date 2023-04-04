@@ -1,40 +1,32 @@
 <template>
   <tas-base-crud :config="config">
-    <template v-slot:detail-footer="data">
-      <div v-if="data.rowData" class="row">
-        <!-- <div class="col-lg-12" v-if="$_sys.isAllowed(mappingUnit.permission)">
-          <mapping-input :alert="['Non-Aktifkan Unit','Proyek dibawah Unit juga akan di non-aktifkan']" @change="requestReload(data.rowData.id)" :title="mappingUnit.title" :getter="mappingUnit.getter" :setter="mappingUnit.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingUnit.readonly" :display="mappingUnit.display" :setter_id="mappingUnit.setter_id" :key_value="mappingUnit.key_value" />
-        </div> -->
-        <div class="col-lg-12 mt-5" v-if="$_sys.isAllowed(mappingPST.permission)">
-          <mapping-input :refresh="refreshToken" :title="mappingPST.title" :getter="mappingPST.getter" :setter="mappingPST.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingPST.readonly" :display="mappingPST.display" :setter_id="mappingPST.setter_id" :key_value="mappingPST.key_value" />
-        </div>
-        <!-- <div class="col-lg-12 mt-5" v-if="$_sys.isAllowed(mappingProjects.permission)">
-          <mapping-input :refresh="refreshToken" :title="mappingProjects.title" :getter="mappingProjects.getter" :setter="mappingProjects.setter" :params="{ 'user_id': data.rowData.id }" :readonly="mappingProjects.readonly" :display="mappingProjects.display" :setter_id="mappingProjects.setter_id" :key_value="mappingProjects.key_value" />
-        </div> -->
-      </div>
+    <template v-slot:list-table-action="data">
+      <a v-if="data.rowData.status_code === 'user_nonactive'" @click="changeUserStatus(data.rowData)" class="btn btn-icon btn-success btn-sm" v-b-tooltip.viewport="'Klik untuk mengaktifkan pengguna'"> <i class="ri-shut-down-line"></i> </a>
     </template>
   </tas-base-crud>
 </template>
 
 <script>
 export default {
-  name: 'crud-users',
+  name: 'crud-users-register',
   data () {
     return {
       config: {
-        title: 'Daftar Pengguna',
+        title: 'Pengguna Non Aktif',
         model_api: 'users',
         getter: 'users',
         setter: 'users',
-        pk_field: 'employee_id',
         filter_api: {
-          status_code: 'user_active'
+          status_code: {
+            value: ['user_rejected', 'email_unverified', 'user_nonactive'],
+            operator: 'in'
+          }
         },
-        export: true,
+        pk_field: 'fullname',
         permission: {
-          create: 'create-users',
-          read: 'view-users',
-          update: 'update-users',
+          create: false,
+          read: 'verify-users',
+          update: false,
           delete: 'delete-users'
         },
         fields: [
@@ -205,41 +197,39 @@ export default {
           { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } }
+          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          {
+            id: 'register_department_id',
+            label: 'Pendaftaran Departemen',
+            methods: { list: { view_data: 'rel_register_department_id' }, detail: { view_data: 'rel_register_department_id' }, create: false, update: false, filter: false }
+          },
+          {
+            id: 'register_pst_id',
+            label: 'Pendaftaran Proyek',
+            methods: { list: { view_data: 'rel_register_pst_id' }, detail: { view_data: 'rel_register_pst_id' }, create: false, update: false, filter: false }
+          }
         ]
       },
       refreshToken: 0,
       projectFilter: {
-        unit_id: null
-      },
-      mappingPST: {
-        title: 'PST Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-pst',
-        setter: 'custom/mapping-users-pst',
-        display: ['pst'],
-        key_value: 'active',
-        setter_id: 'pst_id',
-        readonly: false
+        department_id: null
       },
       mappingProjects: {
         title: 'Proyek Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-projects',
-        setter: 'custom/mapping-users-projects',
-        display: ['ruptl_code', 'project_name'],
+        getter: 'custom/mapping_users_projects',
+        setter: 'custom/mapping_users_projects',
+        display: ['project_number', 'project_name'],
         key_value: 'active',
         setter_id: 'project_id',
         readonly: false
       },
-      mappingUnit: {
-        title: 'Unit Pengguna',
-        permission: 'allow-all',
-        getter: 'custom/mapping-users-units',
-        setter: 'custom/mapping-users-units',
-        display: ['unit_name'],
+      mappingDepartment: {
+        title: 'Departemen Pengguna',
+        getter: 'custom/mapping_users_departments',
+        setter: 'custom/mapping_users_departments',
+        display: ['department_name'],
         key_value: 'active',
-        setter_id: 'unit_id',
+        setter_id: 'department_id',
         readonly: false
       }
     }
@@ -249,7 +239,7 @@ export default {
       this.refreshToken++
     },
     changeUserStatus (data) {
-      data.status_code = 'user_nonactive'
+      data.status_code = 'user_active'
       this.$_api.post('users/active-deactive', data).then(res => {
         this.$_alert.success(null, res.message)
         this.$children[0].$children[1].getData(null)
@@ -258,7 +248,6 @@ export default {
       })
     }
   }
-
 }
 </script>
 

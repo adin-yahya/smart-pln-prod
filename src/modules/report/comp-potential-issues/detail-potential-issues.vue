@@ -13,24 +13,97 @@
           </span>
         </h3>
         <div class="card-toolbar">
-          <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Belum Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">0%</span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sedang Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">-</span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sudah Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">-</span>
-            </div>
-          </div>
           <a @click="$emit('back')" class="btn btn-outline-primary btn-icon btn-circle"><i class="ri-arrow-go-back-line p-0"></i></a>
         </div>
       </div>
     </div>
+      <div v-if="recaptProject" class="mb-3 rounded py-5 px-4 bg-white">
+        <div class="d-flex">
+          <div class="text-center">
+            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
+            <div class="d-flex">
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Belum Dimitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.report_open || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Sedang Dimitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.report_on_going || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Sudah Dimitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.report_close || 0 }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="v-separator mx-3 px-3" style="height:79px"></div>
+          <div class="text-center">
+            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
+            <div class="d-flex">
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Kategori Risk
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.total_category || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Risk Register
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.total_issue || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Sub Risk Register
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.total_sub_issue || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Mitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.total_mitigation || 0 }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="v-separator mx-3 px-3" style="height:79px"></div>
+          <div class="text-center">
+            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
+            <div class="d-flex">
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Belum Dimitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.mitigation_open || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Sedang Dimitigasi
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.mitigation_on_going || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Mitigasi Selesai
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.mitigation_close || 0 }}
+                </span>
+              </div>
+              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                Mitigasi NA
+                <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                  {{ recaptProject.mitigation_na || 0 }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     <div class="row">
       <div class="col-4 pr-0">
         <div class="card card-custom">
