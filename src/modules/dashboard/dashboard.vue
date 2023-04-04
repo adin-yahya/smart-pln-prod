@@ -33,11 +33,16 @@
               <date-picker :disabled-date="disablePeriodAfter" :clearable="false" :input-attr="{ autocomplete: 'off' }" v-model="mainFilter.start_periode" type="month" :input-class="'form-control custom-datepicker datepicker'" class="custom-mx" :value-type="formatDate('month')" :formatter="momentFormat" />
             </div>
           </div>
-          <div class="col-auto">
+          <div class="pr-0 col-auto">
             <div class="form-group mb-0">
               <span class="d-block mb-1 font-weight-bolder font-size-lg" for="">Sampai Periode</span>
               <date-picker :disabled-date="disablePeriodBefore" :clearable="false" :input-attr="{ autocomplete: 'off' }" v-model="mainFilter.end_periode" type="month" :input-class="'form-control custom-datepicker datepicker'" class="custom-mx" :value-type="formatDate('month')" :formatter="momentFormat" />
             </div>
+          </div>
+          <div class="col-auto align-self-end">
+            <button v-b-tooltip.hover title="Reload Filter" @click="reloadFilter()" class="btn btn-icon btn-light-danger">
+              <i class="ri-refresh-line"></i>
+            </button>
           </div>
         </div>
         <div class="position-relative d-flex align-items-end mb-6">
@@ -82,7 +87,7 @@
               </div>
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
-              <span class="d-block font-size-h6 font-weight-bold">Kategori Isu</span>
+              <span class="d-block font-size-h6 font-weight-bold">Kategori Risk</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_kategori_isu | parse('number') }}</span>
               <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
@@ -109,14 +114,6 @@
               <span class="d-block font-size-h6 font-weight-bold">Mitigasi</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_mitigasi | parse('number') }}</span>
               <div @click="redirect('m-mitigations')" class="pointer d-flex flex-fill align-items-center">
-                <span class="font-size-sm font-weight-light">More Info</span>
-                <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
-              </div>
-            </div>
-            <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
-              <span class="d-block font-size-h6 font-weight-bold">Rekomendasi</span>
-              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_rekomendasi | parse('number') }}</span>
-              <div @click="redirect('mitigation-recommendations')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>
@@ -166,7 +163,7 @@
           <div class="row mt-5">
             <div class="col-7">
               <div class="mb-5">
-                <h6 class="font-weight-bolder mb-1">Potensi Isu berdasarkan Status Mitigasi</h6>
+                <h6 class="font-weight-bolder mb-1">Grafik Mitigasi berdasarkan Status</h6>
                 <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
               </div>
               <apexchart v-if="api.statusChart.data" :height="280" :options="trendOption" :series="api.statusChart.data"></apexchart>
@@ -181,25 +178,6 @@
               </div>
             </div>
           </div>
-          <!-- <hr style="border-style: dashed;" />
-          <div v-if="api.treeData.data" class="mb-5">
-            <h6 class="font-weight-bolder mb-1">Potensi Isu & Mitigasi Proyek</h6>
-            <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
-            <div class="pl-3 mt-3">
-              <template v-for="(t, i) in api.treeData.data">
-                <div :key="i + '-treeData'" class="d-flex align-items-start mb-5">
-                  <i class="ri-community-line ri-2x text-primary pr-2"></i>
-                  <div>
-                    <span class="d-block font-weight-bold font-size-lg">{{ t.project_name }} ({{ t.rel_type_id }})</span>
-                    <span class="d-block text-muted mb-2">{{ t.rel_pst_id }} - {{ t.rel_unit_id }}</span>
-                    <template v-for="(n, i) in t.data">
-                      <tree-node :last="i+1 === t.data.length" :key="i + '-nodes'" :node="n" />
-                    </template>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div> -->
           <hr style="border-style: dashed;" />
           <div class="mt-5">
             <div class="d-flex align-items-center mb-5">
@@ -280,18 +258,30 @@
               <table class="table table-hovered table-bordered">
                 <thead class="bg-light-primary">
                   <tr>
-                    <th class="text-center v-center" rowspan="2">Nama Unit</th>
+                    <th class="text-center v-center min-w-250px" rowspan="2">Nama Unit</th>
+                    <th class="text-center v-center nowrap-table" rowspan="2">
+                      Total
+                      <br />
+                      Potensi Isu
+                    </th>
                     <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Potensi Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Kategori Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total Sub<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
                   <tr>
                     <th class="text-center nowrap-table">Belum Mitigasi</th>
                     <th class="text-center nowrap-table">Sedang Mitigasi</th>
                     <th class="text-center nowrap-table">Sudah Mitigasi</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Belum Dilakukan</th>
+                    <th class="text-center nowrap-table">Sedang Dilakukan</th>
+                    <th class="text-center nowrap-table">Mitigasi Selesai</th>
+                    <th class="text-center nowrap-table">Mitigasi NA</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Risk Register</th>
+                    <th class="text-center nowrap-table">Sub Risk Register</th>
+                    <th class="text-center nowrap-table">Mitigasi</th>
                   </tr>
                 </thead>
                 <tbody v-if="api.unitTable.data">
@@ -300,10 +290,17 @@
                       <td>
                         <div class="text-line-2 text-primary font-weight-bolder">{{ d.name }}</div>
                       </td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_open | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_on_going | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_close | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.total | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_na | parse('number') }}</td>
+
                       <td class="nowrap-table text-center v-center">{{ d.total_category | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_issue | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_sub_issue | parse('number') }}</td>
@@ -327,18 +324,30 @@
               <table class="table table-hovered table-bordered">
                 <thead class="bg-light-primary">
                   <tr>
-                    <th class="text-center v-center" rowspan="2">Nama PST</th>
+                    <th class="text-center v-center min-w-250px" rowspan="2">Nama PST</th>
+                    <th class="text-center v-center nowrap-table" rowspan="2">
+                      Total
+                      <br />
+                      Potensi Isu
+                    </th>
                     <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Potensi Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Kategori Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total Sub<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
                   <tr>
                     <th class="text-center nowrap-table">Belum Mitigasi</th>
                     <th class="text-center nowrap-table">Sedang Mitigasi</th>
                     <th class="text-center nowrap-table">Sudah Mitigasi</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Belum Dilakukan</th>
+                    <th class="text-center nowrap-table">Sedang Dilakukan</th>
+                    <th class="text-center nowrap-table">Mitigasi Selesai</th>
+                    <th class="text-center nowrap-table">Mitigasi NA</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Risk Register</th>
+                    <th class="text-center nowrap-table">Sub Risk Register</th>
+                    <th class="text-center nowrap-table">Mitigasi</th>
                   </tr>
                 </thead>
                 <tbody v-if="api.pstTable.data">
@@ -355,10 +364,17 @@
                       <td>
                         <div class="text-line-2 text-primary font-weight-bolder">{{ d.name }}</div>
                       </td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_open | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_on_going | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_close | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.total | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_na | parse('number') }}</td>
+
                       <td class="nowrap-table text-center v-center">{{ d.total_category | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_issue | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_sub_issue | parse('number') }}</td>
@@ -382,18 +398,30 @@
               <table class="table table-hovered table-bordered">
                 <thead class="bg-light-primary">
                   <tr>
-                    <th class="text-center v-center" rowspan="2">Nama Proyek</th>
+                    <th class="text-center v-center min-w-250px" rowspan="2">Nama Proyek</th>
+                    <th class="text-center v-center nowrap-table" rowspan="2">
+                      Total
+                      <br />
+                      Potensi Isu
+                    </th>
                     <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Potensi Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Kategori Isu</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total Sub<br>Risk Register</th>
-                    <th class="text-center v-center nowrap-table" rowspan="2">Total<br>Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
+                    <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
                   <tr>
                     <th class="text-center nowrap-table">Belum Mitigasi</th>
                     <th class="text-center nowrap-table">Sedang Mitigasi</th>
                     <th class="text-center nowrap-table">Sudah Mitigasi</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Belum Dilakukan</th>
+                    <th class="text-center nowrap-table">Sedang Dilakukan</th>
+                    <th class="text-center nowrap-table">Mitigasi Selesai</th>
+                    <th class="text-center nowrap-table">Mitigasi NA</th>
+                    <!-- ================== -->
+                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Risk Register</th>
+                    <th class="text-center nowrap-table">Sub Risk Register</th>
+                    <th class="text-center nowrap-table">Mitigasi</th>
                   </tr>
                 </thead>
                 <tbody v-if="api.projectTable.data">
@@ -409,10 +437,17 @@
                       <td>
                         <div class="text-line-2 text-primary font-weight-bolder">{{ d.name }}</div>
                       </td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_open | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_on_going | parse('number') }}</td>
-                      <td class="pointer nowrap-table text-center v-center">{{ d.total_close | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.total | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.mitigation_na | parse('number') }}</td>
+
                       <td class="nowrap-table text-center v-center">{{ d.total_category | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_issue | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.total_sub_issue | parse('number') }}</td>
@@ -422,6 +457,29 @@
                 </tbody>
               </table>
             </div>
+          </div>
+        </template>
+        <template v-if="mainFilter.activeTab === 'tree'">
+          <div class="position-relative mt-6">
+            <!-- <hr style="border-style: dashed;" /> -->
+          <div v-if="api.treeData.data" class="mb-5">
+            <h6 class="font-weight-bolder mb-1">Potensi Isu & Mitigasi Proyek</h6>
+            <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
+            <div class="pl-3 mt-3">
+              <template v-for="(t, i) in api.treeData.data">
+                <div :key="i + '-treeData'" class="d-flex align-items-start mb-5">
+                  <i class="ri-community-line ri-2x text-primary pr-2"></i>
+                  <div>
+                    <span class="d-block font-weight-bold font-size-lg">{{ t.project_name }} ({{ t.rel_type_id }})</span>
+                    <span class="d-block text-muted mb-2">{{ t.rel_pst_id }} - {{ t.rel_unit_id }}</span>
+                    <template v-for="(n, i) in t.data">
+                      <tree-node :last="i+1 === t.data.length" :key="i + '-nodes'" :node="n" />
+                    </template>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
           </div>
         </template>
       </div>
@@ -489,8 +547,9 @@ export default {
         activeTab: 'report'
       },
       tabList: [
-        { id: 'report', label: 'Rekapitulasi Data' },
-        { id: 'monitoring', label: 'Monitoring Potensi Isu' }
+        { id: 'report', label: 'Statistik Potensi Isu' },
+        { id: 'monitoring', label: 'Monitoring Potensi Isu' },
+        { id: 'tree', label: 'Rekapitulasi Potensi Isu' }
       ],
       momentFormat: {
         stringify: (date) => {
@@ -509,11 +568,11 @@ export default {
         statistic: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/statistic', builder: null },
         statusChart: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-status', builder: null },
         categoryChart: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-category', builder: 'buildcategoryChart' },
-        // treeData: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'custom/potential-issue-by-project/tree', builder: null },
         mapData: { type: 'report', isLoading: true, data: null, params: {}, endpoint: 'projects/dataset', builder: 'buildMapProperty' },
         unitTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-units', builder: null },
         pstTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-pst', builder: null },
-        projectTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-projects', builder: null }
+        projectTable: { type: 'monitoring', isLoading: true, data: null, params: {}, endpoint: 'custom/dashboard/monitoring-potency-issue-by-projects', builder: null },
+        treeData: { type: 'tree', isLoading: true, data: null, params: {}, endpoint: 'custom/potential-issue-by-project/tree', builder: null }
       },
       mapGroup: [
         { label: 'Berdasarkan Unit', code: 'rel_unit_id' },
@@ -621,7 +680,7 @@ export default {
               }
             },
             title: {
-              text: 'Potensi Isu',
+              text: 'Total Mitigasi',
               style: {
                 color: '#1b4957'
               }
@@ -712,6 +771,24 @@ export default {
     this.loadDataset('units')
   },
   methods: {
+    reloadFilter () {
+      this.mainFilter = Object.assign({},
+        {
+          unit_id: { label: 'Semua Unit', code: null },
+          pst_id: { label: 'Semua PST', code: null },
+          project_id: { label: 'Semua Proyek', code: null },
+          start_periode: moment()
+            .set('date', 1)
+            .set('month', 0)
+            .format('MMMM YYYY'),
+          end_periode: moment()
+            .set('date', 1)
+            .format('MMMM YYYY'),
+          activeTab: 'report'
+        }
+      )
+      console.log('reload', this.mainFilter)
+    },
     disablePeriodBefore (date) {
       let start = moment(moment(this.mainFilter.start_periode, 'MMMM YYYY').toDate())
       return date < start

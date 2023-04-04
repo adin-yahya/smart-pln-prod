@@ -31,9 +31,9 @@ export default {
         filter_api: {
           status_code: 'email_verified'
         },
-        // custom_api: {
-        //   list: 'custom/users-verification/list'
-        // },
+        custom_api: {
+          list: 'custom/users-verification/list'
+        },
         pk_field: 'fullname',
         permission: {
           create: false,

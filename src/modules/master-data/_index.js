@@ -10,7 +10,7 @@ const module = {
     { name: 'pst', label: 'PST', icon: 'ri-group-line', path: '/pst', component: () => import('./pst.vue') },
     { name: 'projects', label: 'Proyek', icon: 'ri-group-line', path: '/projects', component: () => import('./projects.vue') },
     // ===============
-    // { separator: 'Isu & Mitigasi', label: 'Kategori Isu & Risk Register', name: 'm-issue-categories', icon: 'ri-stack-line', path: '/m-issue-categories', component: () => import('./m-issue-categories.vue') },
+    // { separator: 'Isu & Mitigasi', label: 'Kategori Risk & Risk Register', name: 'm-issue-categories', icon: 'ri-stack-line', path: '/m-issue-categories', component: () => import('./m-issue-categories.vue') },
     // { separator: 'Isu & Mitigasi', label: 'Daftar Mitigasi', name: 'm-mitigations', icon: 'ri-stack-line', path: '/m-mitigations', component: () => import('./m-mitigations.vue') },
     // ===============
     { separator: 'Konfigurasi Proyek', label: 'Urgensi Proyek', name: 'm-project-urgency', icon: 'ri-stack-line', path: '/m-project-urgency', component: () => import('./m-project-urgency.vue') },

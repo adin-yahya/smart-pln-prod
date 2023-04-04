@@ -13,13 +13,13 @@ const app = {
   server: {
     stagging: 'https://smart-pln.pttas.xyz/api/',
     development: 'https://smart-pln.pttas.xyz/api/',
-    production: 'https://pusmanpro.id/api/',
+    production: 'https://smart.pusmanpro.id/api/',
     demo: 'https://smart-pln.pttas.xyz/api/'
   },
   sso: {
     stagging: 'https://smart-pln.pttas.xyz/api/',
     development: 'https://smart-pln.pttas.xyz/api/',
-    production: 'https://pusmanpro.id/api/',
+    production: 'https://smart.pusmanpro.id/api/',
     demo: 'https://smart-pln.pttas.xyz/api/'
   },
   download: {

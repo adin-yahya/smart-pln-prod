@@ -1,7 +1,7 @@
 <template lang="">
   <div class="node-wrapper position-relative" :class="[node.child && node.child.length ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', node.child && node.child.length ? 'has-children' : '']">
-    <div :class="[node.child && node.child.length ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
-      <i v-if="node.child && node.child.length" @click="active = !active" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
+    <div @click="!checklist? active = !active : ''" :class="[node.child && node.child.length ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
+      <i v-if="node.child && node.child.length" @click="checklist? active = !active : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
       <span v-else class="d-block pl-4"></span>
       <div v-if="checklist" class="checkbox-list mb-0 mt-2">
         <label class="checkbox checkbox-lg align-items-start">
@@ -14,8 +14,8 @@
         </label>
       </div>
       <div v-else class="d-flex flex-column">
-        <span class="title font-weight-bold">{{ node.code }} - {{ node.name }}</span>
-        <span style="flex: 1 0 auto" class="font-size-sm text-muted pr-1">Kode : {{ node.code }}</span>
+        <span class="title font-weight-bold"> <template v-if="node.code">{{ node.code }} - </template>{{ node.name }}</span>
+        <span v-if="node.code" style="flex: 1 0 auto" class="font-size-sm text-muted pr-1">Kode : {{ node.code }}</span>
       </div>
     </div>
     <template v-if="node.child && node.child.length">

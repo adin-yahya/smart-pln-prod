@@ -3,13 +3,15 @@
     <div v-if="project" class="card card-custom mb-3">
       <div class="card-header border-0 py-5">
         <h3 class="card-title align-items-start flex-column flex-fill">
-          <span class="card-label font-weight-bolder text-dark">{{ project.project_name }} - Tahun {{ project.year | parse('year') }}</span>
+          <span class="card-label font-weight-bolder text-dark">{{ project.project_name }}</span>
           <span class="text-muted mt-3 font-weight-bold font-size-sm">
             {{ project.address }}
             <span v-if="project.rel_province_id">, {{ project.rel_province_id }}</span>
             <span v-if="project.rel_city_id">, {{ project.rel_city_id }}</span>
             <br />
             Supervisor: {{ project.rel_unit_id }}
+            <br />
+            Project Site Team: {{ project.rel_pst_id }}
           </span>
         </h3>
         <div class="card-toolbar">
@@ -17,93 +19,93 @@
         </div>
       </div>
     </div>
-      <div v-if="recaptProject" class="mb-3 rounded py-5 px-4 bg-white">
-        <div class="d-flex">
-          <div class="text-center">
-            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
-            <div class="d-flex">
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Belum Dimitigasi
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.report_open || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Sedang Dimitigasi
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.report_on_going || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Sudah Dimitigasi
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.report_close || 0 }}
-                </span>
-              </div>
+    <div v-if="recaptProject" class="mb-3 rounded py-5 px-4 bg-white">
+      <div class="d-flex">
+        <div class="text-center">
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Belum Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.report_open || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sedang Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.report_on_going || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sudah Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.report_close || 0 }}
+              </span>
             </div>
           </div>
-          <div class="v-separator mx-3 px-3" style="height:79px"></div>
-          <div class="text-center">
-            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
-            <div class="d-flex">
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Kategori Risk
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.total_category || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Risk Register
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.total_issue || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Sub Risk Register
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.total_sub_issue || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Mitigasi
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.total_mitigation || 0 }}
-                </span>
-              </div>
+        </div>
+        <div class="v-separator mx-3 px-3" style="height:79px"></div>
+        <div class="text-center">
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Kategori Risk
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.total_category || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Risk Register
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.total_issue || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sub Risk Register
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.total_sub_issue || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Mitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.total_mitigation || 0 }}
+              </span>
             </div>
           </div>
-          <div class="v-separator mx-3 px-3" style="height:79px"></div>
-          <div class="text-center">
-            <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
-            <div class="d-flex">
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Belum Dilakukan
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.mitigation_open || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Sedang Dilakukan
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.mitigation_on_going || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Mitigasi Selesai
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.mitigation_close || 0 }}
-                </span>
-              </div>
-              <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Mitigasi NA
-                <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                  {{ recaptProject.mitigation_na || 0 }}
-                </span>
-              </div>
+        </div>
+        <div class="v-separator mx-3 px-3" style="height:79px"></div>
+        <div class="text-center">
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Belum Dilakukan
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.mitigation_open || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sedang Dilakukan
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.mitigation_on_going || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Mitigasi Selesai
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.mitigation_close || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Mitigasi NA
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.mitigation_na || 0 }}
+              </span>
             </div>
           </div>
         </div>
       </div>
+    </div>
     <div class="row">
       <div class="col-4 pr-0">
         <div class="card card-custom">
@@ -115,25 +117,30 @@
               </span>
             </h3>
           </div>
-          <div v-if="reportList" class="card-body pt-3 ">
-            <ul class="list-unstyled mb-0">
-              <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
-                <div class="d-flex">
-                  <div class="pr-2">{{ i + 1 }}.</div>
-                  <div class="flex-fill">
-                    <span class="d-block">Tanggal {{ l.date | parse('longDate') }}</span>
-                    <div>
-                      <span class="font-size-sm text-muted text-italic">Level {{ l.level }}</span>
-                      <span class="font-size-sm text-muted">-</span>
-                      <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
+          <div class="card-body pt-3 ">
+            <template v-if="reportList && reportList.length">
+              <ul class="list-unstyled mb-0">
+                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
+                  <div class="d-flex">
+                    <div class="pr-2">{{ i + 1 }}.</div>
+                    <div class="flex-fill">
+                      <span class="d-block">Tanggal {{ l.date | parse('longDate') }}</span>
+                      <div>
+                        <span class="font-size-sm text-muted text-italic">Level {{ l.level }}</span>
+                        <span class="font-size-sm text-muted">-</span>
+                        <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
+                      </div>
+                    </div>
+                    <div :class="{ 'rotate-right': activeReport.id === l.id }" class="smooth align-self-center">
+                      <i class="ri-arrow-down-s-line"></i>
                     </div>
                   </div>
-                  <div :class="{ 'rotate-right': activeReport.id === l.id }" class="smooth align-self-center">
-                    <i class="ri-arrow-down-s-line"></i>
-                  </div>
-                </div>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto">
+            </template>
             <hr />
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
               <i class="ri-add-circle-fill"></i>
@@ -414,7 +421,7 @@ export default {
     this.getAllData()
   },
   methods: {
-    getAllData (init = true) {
+    getAllData () {
       this.loadProject()
       this.loadReportList()
       this.loadRecaptProject()
@@ -436,7 +443,9 @@ export default {
         .get('report-potential-issues/dataset', { project_id: this.id })
         .then((res) => {
           this.reportList = res.data
-          if (!this.activeReport || this.activeReport.id === -1) this.activeReport = res.data[0]
+          if (res.data.length) {
+            if (!this.activeReport || this.activeReport.id === -1) this.activeReport = res.data[0]
+          } else this.activeReport = { id: -1 }
           this.loadingCount++
         })
         .catch((err) => {
