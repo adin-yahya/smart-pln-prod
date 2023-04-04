@@ -24,7 +24,7 @@
         <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
           <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+            <div class="font-weight-bold text-center text-muted font-size-sm">
               Belum Dimitigasi
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.report_open || 0 }}
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <div class="v-separator mx-3 px-3" style="height:79px"></div>
+        <div class="v-separator mx-1 px-2" style="height:79px"></div>
         <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
           <div class="d-flex">
@@ -74,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div class="v-separator mx-3 px-3" style="height:79px"></div>
+        <div class="v-separator mx-1 px-2" style="height:79px"></div>
         <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
           <div class="d-flex">
