@@ -87,7 +87,7 @@
               </div>
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
-              <span class="d-block font-size-h6 font-weight-bold">Kategori Risk</span>
+              <span class="d-block font-size-h6 font-weight-bold">Kategori Potensi Isu</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_kategori_isu | parse('number') }}</span>
               <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
@@ -278,7 +278,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>
@@ -344,7 +344,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>
@@ -418,7 +418,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>

@@ -49,7 +49,7 @@
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
           <div class="d-flex">
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Kategori Risk
+              Kategori Potensi Isu
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.total_category || 0 }}
               </span>
