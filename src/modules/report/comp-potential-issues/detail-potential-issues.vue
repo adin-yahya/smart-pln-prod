@@ -120,7 +120,7 @@
           <div class="card-body pt-3 ">
             <template v-if="reportList && reportList.length">
               <ul class="list-unstyled mb-0">
-                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
+                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
                   <div class="d-flex">
                     <div class="pr-2">{{ i + 1 }}.</div>
                     <div class="flex-fill">
@@ -143,6 +143,7 @@
             </template>
             <hr />
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
+            <!-- <button @click="activeReport.id = -1" class="btn btn-block btn-light-success font-size-sm font-weight-bold"> -->
               <i class="ri-add-circle-fill"></i>
               Tambah Laporan Baru
             </button>
@@ -469,7 +470,7 @@ export default {
         .then((res) => {
           this.reportList = res.data
           if (res.data.length) {
-            if (!this.activeReport || this.activeReport.id === -1) this.activeReport = res.data[0]
+            if (!this.activeReport || this.activeReport.id === -1) this.setReportActive(res.data[0])
           } else this.activeReport = { id: -1 }
           this.loadingCount++
         })
@@ -477,6 +478,9 @@ export default {
           this.loadingCount++
           this.$_alert.error(err)
         })
+    },
+    setReportActive (e) {
+      this.activeReport = Object.assign({}, JSON.parse(JSON.stringify(e)))
     },
     loadRecaptProject () {
       this.$_api
