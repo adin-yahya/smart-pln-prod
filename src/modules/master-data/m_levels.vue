@@ -1,5 +1,5 @@
 <template>
-    <tas-base-crud :config="config" hide-delete />
+    <tas-base-crud :config="config" hide-create hide-delete />
   </template>
 <script>
 export default {

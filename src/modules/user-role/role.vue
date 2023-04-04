@@ -58,7 +58,7 @@ export default {
           },
           {
             id: 'level',
-            label: 'Level',
+            label: 'Level Mitigasi',
             methods: {
               list: { transform: 'prefix-Level', class: 'min-w-50px' },
               detail: { transform: 'prefix-Level' },

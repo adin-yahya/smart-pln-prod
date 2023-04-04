@@ -154,7 +154,7 @@
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Pilih Unit</label>
-                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_department" :appendToBody="true" class="vs-style" :options="datasets.unit" :placeholder="'Unit'">
+                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_unit" :appendToBody="true" class="vs-style" :options="datasets.unit" :placeholder="'Unit'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>
@@ -162,7 +162,7 @@
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Pilih PST</label>
-                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_project" :appendToBody="true" class="vs-style" :options="datasets.pst" :placeholder="'Proyek'">
+                      <v-select :clearable="false" @input="filterProject($event)" v-model="temp_pst" :appendToBody="true" class="vs-style" :options="datasets.pst" :placeholder="'Proyek'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>
@@ -195,8 +195,8 @@
                 <h4 class="font-weight-bolder mb-3">Unit &amp; PST:</h4>
                 <div class="text-dark-50 font-weight-bold line-height-lg mb-8">
                   <div v-if="regForm.role_id">{{ roleList.filter((x) => x.id == regForm.role_id)[0]['role_name'] }}</div>
-                  <div v-if="temp_department"> Unit {{ temp_department.label }}</div>
-                  <div v-if="temp_project">PST {{ temp_project.label }}</div>
+                  <div v-if="temp_unit"> Unit {{ temp_unit.label }}</div>
+                  <div v-if="temp_pst">PST {{ temp_pst.label }}</div>
                   <div>Jabatan {{ regForm.job_position }}</div>
                 </div>
                 <!--end::Section-->
@@ -348,8 +348,8 @@ export default {
         username: null,
         password: null,
         email: null,
-        department_id: null,
-        project_id: null,
+        unit_id: null,
+        pst_id: null,
         role_id: null,
         job_position: null
       },
@@ -357,8 +357,8 @@ export default {
         unit: [],
         pst: []
       },
-      temp_department: null,
-      temp_project: null,
+      temp_unit: null,
+      temp_pst: null,
       showPassword: false,
       projectList: [],
       roleList: [],
@@ -374,7 +374,7 @@ export default {
       if (this.step === 1) {
         return !(!this.apiValidate.email && !this.apiValidate.username && this.regForm.fullname && this.regForm.username && this.regForm.password && this.regForm.email)
       } else if (this.step === 2) {
-        return !(this.regForm.project_id && this.regForm.department_id && this.regForm.job_position)
+        return !(this.regForm.pst_id && this.regForm.unit_id && this.regForm.job_position)
       } else return false
     }
   },
@@ -409,7 +409,7 @@ export default {
       })
     },
     getProject (deptID) {
-      this.temp_project = null
+      this.temp_pst = null
       this.$set(this.regForm, 'pst_id', null)
       if (deptID.code) {
         let filter = {
@@ -424,8 +424,8 @@ export default {
       }
     },
     filterProject (e) {
-      this.$set(this.regForm, 'project_id', e.code)
-      this.$set(this.regForm, 'department_id', this.temp_department)
+      this.$set(this.regForm, 'pst_id', e.code)
+      this.$set(this.regForm, 'unit_id', this.temp_unit)
     },
     submitForm () {
       this.isLoadingSubmit = true
