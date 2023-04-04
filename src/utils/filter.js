@@ -55,6 +55,13 @@ Vue.filter('parse', (value, id) => {
         else if (value === 'on_verification') toReturn = 'Approve'
         else toReturn = value
         break
+      case 'status_code_mitigation':
+        if (value === 'na') toReturn = 'Not Applicable'
+        else if (value === 'open') toReturn = 'Belum Dilakukan'
+        else if (value === 'close') toReturn = 'Sudah Dilakukan'
+        else if (value === 'on_going') toReturn = 'Sedang Dilakukan'
+        else toReturn = value
+        break
       case 'verify':
         if (value === 'revision_request') toReturn = 'Permintaan Revisi'
         else if (value === 'verification_request') toReturn = 'Pengajuan Verifikasi'

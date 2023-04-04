@@ -77,13 +77,13 @@
             <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
             <div class="d-flex">
               <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Belum Dimitigasi
+                Belum Dilakukan
                 <span class="d-block text-primary font-size-h2 font-weight-bolder">
                   {{ recaptProject.mitigation_open || 0 }}
                 </span>
               </div>
               <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-                Sedang Dimitigasi
+                Sedang Dilakukan
                 <span class="d-block text-primary font-size-h2 font-weight-bolder">
                   {{ recaptProject.mitigation_on_going || 0 }}
                 </span>
@@ -184,7 +184,7 @@
                             <span class="d-block">{{ m.code }} - {{ m.name }}</span>
                             <div>
                               <span v-if="m.reference" class="d-block font-size-sm text-muted text-italic">Referensi : {{ m.reference }}</span>
-                              <span :class="bgMitigationStatus('text', m.status_code)" class="font-size-sm font-weight-bold">{{ m.status_code | parse('status_code_form') }}</span>
+                              <span :class="bgMitigationStatus('text', m.status_code)" class="font-size-sm font-weight-bold">{{ m.status_code | parse('status_code_mitigation') }}</span>
                             </div>
                           </div>
                           <div class="smooth align-self-center ml-3">
@@ -213,7 +213,7 @@
             </h3>
           </div>
           <div class="card-body pt-3 position-relative">
-            <div class="form-group">
+            <div v-if="$_sys.isAllowed('bypass-level')" class="form-group">
               <label class="">Pilih level Mitigasi :</label>
               <div class="row ml-3">
                 <div v-for="(l, i) in levelData" :key="i + '-levelData'" class="col-lg-4">

@@ -154,7 +154,7 @@
                   <div class="col-xl-12">
                     <div class="form-group fv-plugins-icon-container">
                       <label class="font-size-h6 font-weight-bolder text-dark">Pilih Unit</label>
-                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_department" :appendToBody="true" class="vs-style" :options="datasets.unit" :placeholder="'Departemen'">
+                      <v-select :clearable="false" @input="getProject($event)" v-model="temp_department" :appendToBody="true" class="vs-style" :options="datasets.unit" :placeholder="'Unit'">
                         <slot name="no-options">{{ $t('error.no_data') }}</slot>
                       </v-select>
                     </div>
@@ -374,13 +374,12 @@ export default {
       if (this.step === 1) {
         return !(!this.apiValidate.email && !this.apiValidate.username && this.regForm.fullname && this.regForm.username && this.regForm.password && this.regForm.email)
       } else if (this.step === 2) {
-        return !(this.regForm.project_id && this.regForm.department_id && this.regForm.role_id && this.regForm.job_position)
+        return !(this.regForm.project_id && this.regForm.department_id && this.regForm.job_position)
       } else return false
     }
   },
   mounted () {
     this.getDepartment()
-    this.getRole()
   },
   methods: {
     registerStep (id) {
@@ -401,13 +400,8 @@ export default {
           this.$set(this.apiValidate, prop, true)
         })
     },
-    getRole () {
-      this.$_api.dataset('/no-auth/role-register').then((res) => {
-        this.roleList = res.data
-      })
-    },
     getDepartment () {
-      this.$_api.dataset('/no-auth/units').then((res) => {
+      this.$_api.dataset('/no-auth/unit').then((res) => {
         let data = res.data.map((x) => {
           return { label: x.name, code: x.id }
         })
