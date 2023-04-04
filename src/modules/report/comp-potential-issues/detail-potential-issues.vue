@@ -120,7 +120,7 @@
           <div class="card-body pt-3 ">
             <template v-if="reportList && reportList.length">
               <ul class="list-unstyled mb-0">
-                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
+                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
                   <div class="d-flex">
                     <div class="pr-2">{{ i + 1 }}.</div>
                     <div class="flex-fill">
@@ -131,7 +131,7 @@
                         <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
                       </div>
                     </div>
-                    <div :class="{ 'rotate-right': activeReport.id === l.id }" class="smooth align-self-center">
+                    <div :class="{ 'rotate-right': (activeReport && activeReport.id === l.id) }" class="smooth align-self-center">
                       <i class="ri-arrow-down-s-line"></i>
                     </div>
                   </div>
@@ -139,7 +139,7 @@
               </ul>
             </template>
             <template v-else>
-              <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto">
+              <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto" />
             </template>
             <hr />
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
@@ -150,15 +150,40 @@
         </div>
       </div>
       <div v-if="activeReport && activeReport.id !== -1" class="col-8">
-        <div v-if="activeReport" class="card card-custom">
+        <div v-if="activeReport" class="card card-custom mb-3">
           <div class="card-header align-items-center min-h-20px border-0 pt-5">
             <h3 class="card-title align-items-start flex-column m-0">
-              <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu - Tanggal {{ activeReport.date | parse('longDate') }}</span>
+              <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu</span>
             </h3>
-            <div class="card-toolbar">
-              <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-xl font-weight-boldest label-inline">{{ activeReport.status_code | parse('status_code_form') }}</span>
+            <div v-if="activeReport.status_code === 'open'" class="card-toolbar">
+              <button @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
             </div>
           </div>
+          <div class="card-body pt-3 position-relative">
+            <table class="table table-detailX mb-0">
+              <tbody>
+                <tr>
+                  <th class="nowrap-table pl-0">Tanggal Dibuat</th>
+                  <th class="nowrap-table pl-0">:</th>
+                  <td>{{ activeReport.date | parse('longDate') }}</td>
+                </tr>
+                <tr>
+                  <th class="nowrap-table pl-0">Level Mitigasi</th>
+                  <th class="nowrap-table pl-0">:</th>
+                  <td>Level {{ activeReport.level }}</td>
+                </tr>
+                <tr>
+                  <th class="nowrap-table pl-0 v-center">Status Laporan</th>
+                  <th class="nowrap-table pl-0 v-center">:</th>
+                  <td>
+                    <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-xl font-weight-boldest label-inline">{{ activeReport.status_code | parse('status_code_form') }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div v-if="activeReport" class="card card-custom">
           <div class="card-body pt-3 position-relative">
             <b-overlay :show="loadingRisk" no-wrap rounded="sm" />
             <ul v-if="riskList && activeRisk" class="list-unstyled mb-0">
@@ -545,8 +570,24 @@ export default {
           this.getAllData()
         })
         .catch((err) => {
-          console.log(err)
+          this.$_alert.error(err)
         })
+    },
+    deleteReport (data) {
+      this.$_alert.confirm('Hapus Permanen', 'Laporan yang sudah dihapus tidak dapat dikembalikan, lanjutkan ?').then((result) => {
+        if (result.isConfirmed) {
+          this.$_api
+            .delete('report-potential-issues', { data: data })
+            .then((res) => {
+              this.activeReport = null
+              this.getAllData()
+              this.$_alert.success(null, res.message)
+            })
+            .catch((err) => {
+              this.$_alert.error(err)
+            })
+        }
+      })
     },
     bgMitigationStatus (prefix, e) {
       if (e === 'on_going') return prefix + '-warning'
