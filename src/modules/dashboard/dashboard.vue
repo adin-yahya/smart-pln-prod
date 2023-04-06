@@ -119,10 +119,9 @@
               </div>
             </div>
           </div>
-          <div v-if="api.statistic.data" class="row mb-3">
+          <!-- <div v-if="api.statistic.data" class="row mb-3">
             <div class="col-4">
               <div class="card card-custom bg-danger card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -130,12 +129,10 @@
                     <span class="font-size-h5 align-self-center pl-2">Belum Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
             <div class="col-4 pl-0">
               <div class="card card-custom bg-warning card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -143,12 +140,10 @@
                     <span class="font-size-h5 align-self-center pl-2">Sedang Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
             <div class="col-4 pl-0">
               <div class="card card-custom bg-success card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -156,10 +151,9 @@
                     <span class="font-size-h5 align-self-center pl-2">Sudah Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row mt-5">
             <div class="col-7">
               <div class="mb-5">
@@ -194,7 +188,7 @@
           </div>
           <GmapMap ref="mapRefsdashboard" class="h-500px" :options="mapOption" :center="mapCenter" :zoom="zoomNum">
             <GmapInfoWindow v-if="infoContent" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen = false">
-              <div>
+              <div class="pointer" @click="redirect('projects', null, { view: 'detail', id: infoContent.id })">
                 <span class="d-block font-weight-bold text-dark mt-2">{{ infoContent.project_name }} - Tahun {{ infoContent.year | parse('year') }}</span>
                 <span class="d-block font-weight-bold text-muted mb-2">Supervisor: {{ infoContent.rel_unit_id }}</span>
                 <table class="table-borderless">
@@ -746,23 +740,23 @@ export default {
         }
         this.$nextTick((nextTick) => {
           this.getAllData()
-          if (e.activeTab === 'report') {
-            this.$refs.mapRefsdashboard.$mapPromise.then((map) => {
-              const featureStyleOptions = {
-                strokeColor: '#2d3a50',
-                strokeOpacity: 1.0,
-                strokeWeight: 2.0,
-                fillColor: '#f24b5f',
-                fillOpacity: 0
-              }
-              let featureLayer = map.getFeatureLayer('COUNTRY')
-              featureLayer.style = (options) => {
-                if (options.feature.placeId === 'ChIJtwRkSdcHTCwRhfStG-dNe-M') {
-                  return featureStyleOptions
-                }
-              }
-            })
-          }
+          // if (e.activeTab === 'report') {
+          //   this.$refs.mapRefsdashboard.$mapPromise.then((map) => {
+          //     const featureStyleOptions = {
+          //       strokeColor: '#2d3a50',
+          //       strokeOpacity: 1.0,
+          //       strokeWeight: 2.0,
+          //       fillColor: '#f24b5f',
+          //       fillOpacity: 0
+          //     }
+          //     let featureLayer = map.getFeatureLayer('COUNTRY')
+          //     featureLayer.style = (options) => {
+          //       if (options.feature.placeId === 'ChIJtwRkSdcHTCwRhfStG-dNe-M') {
+          //         return featureStyleOptions
+          //       }
+          //     }
+          //   })
+          // }
         })
       }
     }
@@ -916,11 +910,12 @@ export default {
         this.currentMidx = idx
       }
     },
-    redirect (to, data = null) {
+    redirect (to, data = null, query = {}) {
       let param = {
         view: 'list'
       }
       if (data) param.filters = JSON.stringify(data)
+      param = {...param, ...query}
       const routeData = this.$router.resolve({ name: to, query: param })
       window.open(routeData.href, '_blank')
     },

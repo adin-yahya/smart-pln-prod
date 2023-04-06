@@ -4,7 +4,7 @@
       <i v-if="node.child && node.child.length" @click="checklist ? (active = !active) : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
       <span v-else class="d-block pl-4"></span>
       <div v-if="checklist" class="checkbox-list mb-0 mt-2">
-        <label class="checkbox checkbox-lg align-items-start">
+        <label :class="levelClass[level]" class="checkbox checkbox-lg align-items-start">
           <input v-model="selected" type="checkbox" :name="node.code + '-name'" />
           <span></span>
           <div class="d-flex flex-column">
@@ -57,7 +57,8 @@ export default {
   data () {
     return {
       active: false,
-      selected: false
+      selected: false,
+      levelClass: ['checkbox-primary', 'checkbox-info', 'checkbox-warning', 'checkbox-danger']
     }
   },
   watch: {
@@ -68,7 +69,7 @@ export default {
       }
     },
     selected: {
-      immediate: false,
+      immediate: true,
       handler (e) {
         this.checkLevel(e)
       }

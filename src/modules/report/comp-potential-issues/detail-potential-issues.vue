@@ -91,7 +91,7 @@
               </span>
             </div>
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Mitigasi Selesai
+              Sudah Dilakukan
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.mitigation_close || 0 }}
               </span>
@@ -117,10 +117,10 @@
               </span>
             </h3>
           </div>
-          <div class="card-body pt-3 ">
+          <div class="card-body pt-3">
             <template v-if="reportList && reportList.length">
               <ul class="list-unstyled mb-0">
-                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
+                <!-- <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
                   <div class="d-flex">
                     <div class="pr-2">{{ i + 1 }}.</div>
                     <div class="flex-fill">
@@ -135,7 +135,49 @@
                       <i class="ri-arrow-down-s-line"></i>
                     </div>
                   </div>
-                </li>
+                </li> -->
+                <template v-for="(l, i) in reportList">
+                  <li :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport && activeReport.id === l.id }" @click="setReportActive(l)" class="pointer py-2 rounded-sm px-4">
+                    <div class="d-flex">
+                      <div class="flex-fill">
+                        <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
+                        <span class="d-block font-size-lg font-weight-bold">Report Tanggal {{ l.date | parse('longDate') }} - Level {{ l.level }}</span>
+                      </div>
+                      <div :class="{ 'rotate-right': activeReport && activeReport.id === l.id }" class="smooth align-self-end">
+                        <i class="ri-arrow-down-s-line"></i>
+                      </div>
+                    </div>
+                    <div class="font-size-sm pl-2">
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sub Risk Register</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Mitigasi</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Belum dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sedang dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sudah Dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Not Applicable</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li :key="i + '-reportList-hr'">
+                    <hr style="border-style:dashed" />
+                  </li>
+                </template>
               </ul>
             </template>
             <template v-else>
@@ -143,7 +185,7 @@
             </template>
             <hr />
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
-            <!-- <button @click="activeReport.id = -1" class="btn btn-block btn-light-success font-size-sm font-weight-bold"> -->
+              <!-- <button @click="activeReport.id = -1" class="btn btn-block btn-light-success font-size-sm font-weight-bold"> -->
               <i class="ri-add-circle-fill"></i>
               Tambah Laporan Baru
             </button>
@@ -271,7 +313,7 @@
             </div>
             <span class="">Pilih Risk Register :</span>
             <div v-for="(n, i) in treeData" class="pl-1" :key="i + '-nodes'">
-              <tree-node @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
+              <tree-node :checked="!reportList.length" @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
             </div>
             <hr />
             <button @click="newReport()" class="btn btn-block btn-success">Simpan & Tambahkan Laporan</button>
