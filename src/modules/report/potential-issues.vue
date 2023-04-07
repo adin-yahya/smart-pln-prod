@@ -31,6 +31,52 @@ export default {
         },
         fields: [
           {
+            id: 'id',
+            label: 'Proyek',
+            methods: {
+              list: { view_data: 'project_name' },
+              detail: { view_data: 'project_name' },
+              create: false,
+              update: false,
+              filter: {
+                setter: 'projects',
+                getter: 'projects',
+                type: 'lookup-radio',
+                class: 'col-auto min-w-250px',
+                option: {
+                  list_pointer: {
+                    label: 'project_name',
+                    code: 'id',
+                    display: ['ruptl_code', 'project_name']
+                  }
+                }
+              }
+            }
+          },
+          {
+            id: 'type_id',
+            label: 'Tipe Proyek',
+            methods: {
+              list: { view_data: 'rel_type_id' },
+              detail: { view_data: 'rel_type_id' },
+              create: false,
+              update: false,
+              filter: {
+                setter: 'm-project-types',
+                getter: 'm-project-types',
+                type: 'lookup-radio',
+                option: {
+                  list_pointer: {
+                    label: 'name',
+                    code: 'id',
+                    display: ['name', 'description']
+                  }
+                }
+              }
+            }
+          },
+          { id: 'location_code', label: 'Kode Lokasi', methods: { list: true, detail: true, create: { validation: ['required'] }, update: { validation: ['required'] }, filter: false } },
+          {
             id: 'unit_id',
             label: 'Unit Supervisor',
             methods: {
@@ -76,32 +122,14 @@ export default {
               }
             }
           },
-          {
-            id: 'id',
-            label: 'Proyek',
-            methods: {
-              list: { view_data: 'project_name' },
-              detail: { view_data: 'project_name' },
-              create: false,
-              update: false,
-              filter: {
-                setter: 'projects',
-                getter: 'projects',
-                type: 'lookup-radio',
-                class: 'col-auto min-w-250px',
-                option: {
-                  list_pointer: {
-                    label: 'project_name',
-                    code: 'id',
-                    display: ['ruptl_code', 'project_name']
-                  }
-                }
-              }
-            }
-          },
-          { id: 'report_open', label: 'Belum Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
-          { id: 'report_on_going', label: 'Sedang Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
-          { id: 'report_close', label: 'Sudah Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          { id: 'report_open', label: 'Laporan<br>Belum Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          { id: 'report_on_going', label: 'Laporan<br>Sedang Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+          { id: 'report_close', label: 'Laporan<br>Sudah Dimitigasi', methods: { list: { transform: 'suffix-Laporan' } }, detail: { transform: 'suffix-Laporan' } },
+
+          { id: 'potency_issue_open', label: 'Sub Risk<br>Belum Dimitigasi', methods: { list: { transform: 'number' } }, detail: { transform: 'number' } },
+          { id: 'potency_issue_on_going', label: 'Sub Risk<br>Sedang Dimitigasi', methods: { list: { transform: 'number' } }, detail: { transform: 'number' } },
+          { id: 'potency_issue_close', label: 'Sub Risk<br>Sudah Dimitigasi', methods: { list: { transform: 'number' } }, detail: { transform: 'number' } },
+
           { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'created_at', label: 'Dibuat', methods: { list: false, detail: false, create: false, update: false, filter: false } },

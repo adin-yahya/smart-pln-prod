@@ -23,7 +23,7 @@
       <div class="d-flex">
         <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
-          <div class="d-flex">
+          <div class="d-flex align-items-end">
             <div class="font-weight-bold text-center text-muted font-size-sm">
               Kategori Potensi Isu
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
@@ -317,7 +317,7 @@
           </div>
           <div class="card-body pt-3 position-relative">
             <div v-if="$_sys.isAllowed('bypass-level')" class="form-group">
-              <label class="">Pilih level Mitigasi :</label>
+              <label  class="font-size-lg font-weight-bolder text-uppercase mb-3">Pilih level Mitigasi :</label>
               <div class="row ml-3">
                 <div v-for="(l, i) in levelData" :key="i + '-levelData'" class="col-lg-4">
                   <label class="option option-plain mb-0">
@@ -339,8 +339,8 @@
                 </div>
               </div>
             </div>
-            <span class="">Pilih Risk Register :</span>
-            <div v-for="(n, i) in treeData" class="pl-1" :key="i + '-nodes'">
+            <span class="font-size-lg font-weight-bolder text-uppercase">Pilih Risk Register :</span>
+            <div v-for="(n, i) in treeData" class="pl-0" :key="i + '-nodes'">
               <tree-node :checked="!reportList.length" @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
             </div>
             <hr />

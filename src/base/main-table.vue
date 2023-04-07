@@ -69,7 +69,8 @@
             <thead class="">
               <tr>
                 <th class="position-relative" v-for="(h, i) in fields.filter((x) => x.show === true && $_sys.isAllowed(x.permission))" :key="i + '-header'" :class="[{ sticky: i === 0 }, { pointer: h.order }]" @click="orderField(h)">
-                  <span class="d-block nowrap" :class="{ 'text-dark-75 mr-5': h.id === orderID }">{{ h.label }}</span>
+                  <span class="d-block nowrap" :class="{ 'text-dark-75 mr-5': h.id === orderID }" v-html="h.label">
+                  </span>
                   <i v-if="h.id === orderID" class="sort-table text-dark-75" :class="'ri-sort-' + paramAPI.sort.toLowerCase()"></i>
                 </th>
                 <th class="action-table"></th>

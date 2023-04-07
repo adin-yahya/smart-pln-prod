@@ -1,6 +1,6 @@
 <template lang="">
-  <div class="node-wrapper position-relative" :class="[node.child && node.child.length ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', node.child && node.child.length ? 'has-children' : '']">
-    <div @click="!checklist ? (active = !active) : ''" :class="[node.child && node.child.length ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
+  <div class="node-wrapper position-relative" :class="[(node.child && node.child.length) || checklist ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', (node.child && node.child.length) || checklist ? 'has-children' : '']">
+    <div @click="!checklist ? (active = !active) : ''" :class="[(node.child && node.child.length) || checklist ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
       <i v-if="node.child && node.child.length" @click="checklist ? (active = !active) : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
       <span v-else class="d-block pl-4"></span>
       <div v-if="checklist" class="checkbox-list mb-0 mt-2">
@@ -28,7 +28,8 @@
     </div>
     <template v-if="node.child && node.child.length">
       <template v-for="(n, i) in node.child">
-        <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level + 1" :checked="selected" :checklist="n.child ? checklist : false" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" />
+        <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level + 1" :checked="selected" :checklist="checklist" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" />
+        <!-- <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level + 1" :checked="selected" :checklist="n.child ? checklist : false" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" /> -->
       </template>
     </template>
   </div>
