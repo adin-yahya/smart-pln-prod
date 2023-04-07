@@ -105,7 +105,7 @@
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Sub Risk Register</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_sub_isu | parse('number') }}</span>
-              <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
+              <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>
@@ -254,11 +254,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama Unit</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -286,9 +286,9 @@
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
@@ -320,11 +320,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama PST</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -360,9 +360,9 @@
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
@@ -394,11 +394,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama Proyek</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -428,14 +428,14 @@
                         "
                         class="pointer"
                       > -->
-                      <td>
+                      <td @click="redirect('potential-issues', null, { view: 'detail', id: d.id })" class="pointer">
                         <div class="text-line-2 text-primary font-weight-bolder">{{ d.name }}</div>
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>

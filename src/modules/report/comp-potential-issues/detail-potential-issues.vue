@@ -22,33 +22,9 @@
     <div v-if="recaptProject" class="mb-3 rounded py-5 px-4 bg-white">
       <div class="d-flex">
         <div class="text-center">
-          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
-          <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm">
-              Belum Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_open || 0 }}
-              </span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sedang Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_on_going || 0 }}
-              </span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sudah Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_close || 0 }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="v-separator mx-1 px-2" style="height:79px"></div>
-        <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
           <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+            <div class="font-weight-bold text-center text-muted font-size-sm">
               Kategori Potensi Isu
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.total_category || 0 }}
@@ -70,6 +46,30 @@
               Mitigasi
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.total_mitigation || 0 }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="v-separator mx-1 px-2" style="height:79px"></div>
+        <div class="text-center">
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Sub Risk Register</span>
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Belum Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_open || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sedang Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_on_going || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sudah Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_close || 0 }}
               </span>
             </div>
           </div>
@@ -112,31 +112,33 @@
           <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label font-weight-bolder text-dark">Daftar Laporan Potensi Isu</span>
-              <span class="text-muted mt-3 font-weight-bold font-size-sm">
+              <span class="text-muted mt-1 font-weight-bold font-size-sm">
                 Klik daftar dibawah ini untuk melihat detail laporan
               </span>
             </h3>
           </div>
           <div class="card-body pt-3">
             <template v-if="reportList && reportList.length">
+              <hr class="mt-0" />
               <ul class="list-unstyled mb-0">
-                <!-- <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': (activeReport && activeReport.id === l.id) }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
+                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport && activeReport.id === l.id }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
                   <div class="d-flex">
                     <div class="pr-2">{{ i + 1 }}.</div>
                     <div class="flex-fill">
                       <span class="d-block">Tanggal {{ l.date | parse('longDate') }}</span>
                       <div>
                         <span class="font-size-sm text-muted text-italic">Level {{ l.level }}</span>
-                        <span class="font-size-sm text-muted">-</span>
-                        <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
                       </div>
                     </div>
-                    <div :class="{ 'rotate-right': (activeReport && activeReport.id === l.id) }" class="smooth align-self-center">
+                    <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', l.status_code)" class="mr-2 w-20px min-w-20px h-20px rounded-sm align-self-center">
+                      &nbsp;
+                    </div>
+                    <div :class="{ 'rotate-right': activeReport && activeReport.id === l.id }" class="smooth align-self-center">
                       <i class="ri-arrow-down-s-line"></i>
                     </div>
                   </div>
-                </li> -->
-                <template v-for="(l, i) in reportList">
+                </li>
+                <!-- <template v-for="(l, i) in reportList">
                   <li :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport && activeReport.id === l.id }" @click="setReportActive(l)" class="pointer py-2 rounded-sm px-4">
                     <div class="d-flex">
                       <div class="flex-fill">
@@ -177,15 +179,39 @@
                   <li :key="i + '-reportList-hr'">
                     <hr style="border-style:dashed" />
                   </li>
-                </template>
+                </template> -->
               </ul>
             </template>
             <template v-else>
               <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto" />
             </template>
+            <div v-if="recaptProject" class="text-center">
             <hr />
+              <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
+              <div class="d-flex">
+                <div class="font-weight-bold text-center text-muted font-size-sm">
+                  Belum Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_open || 0 }}
+                  </span>
+                </div>
+                <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                  Sedang Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_on_going || 0 }}
+                  </span>
+                </div>
+                <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                  Sudah Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_close || 0 }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <hr />
+
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
-              <!-- <button @click="activeReport.id = -1" class="btn btn-block btn-light-success font-size-sm font-weight-bold"> -->
               <i class="ri-add-circle-fill"></i>
               Tambah Laporan Baru
             </button>
@@ -232,16 +258,18 @@
             <ul v-if="riskList && activeRisk" class="list-unstyled mb-0">
               <li v-for="(r, i) in riskList" :key="i + '-riskList'" @click="activeRisk = r" class="pointer border-1 py-2 rounded-sm">
                 <div class="d-flex">
-                  <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px min-w-20px h-20px rounded-sm">
+                  <!-- <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px min-w-20px h-20px rounded-sm">
                     &nbsp;
-                  </div>
+                  </div> -->
                   <div class="flex-fill">
                     <span class="d-block font-size-lg font-weight-bold">{{ r.rel_sub_issue_id }}</span>
+                    <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-md font-weight-boldest label-inline mr-2">{{ r.status_code | parse('status_code_form') }}</span>
                     <span class="font-size-sm text-muted">
                       Kode {{ r.sub_issue_code }} -
                       <span class="text-italic">{{ r.rel_category_id }} > {{ r.rel_issue_id }}</span>
                     </span>
                   </div>
+
                   <div :class="{ 'rotate-bottom': activeRisk.id === r.id }" class="smooth align-self-center">
                     <i class="ri-arrow-right-s-line"></i>
                   </div>
@@ -407,23 +435,23 @@
                 <!--begin::Info-->
                 <div class="timeline-desc timeline-desc-light-success pt-0">
                   <div class="d-flex align-items-center justify-content-between mb-1">
-                    <span class="font-weight-bolder text-success">Selesaikan Mitigasi</span>
+                    <span class="font-weight-bolder text-success">Mitigasi Sudah Dilakukan</span>
                   </div>
                   <template v-if="selectedMitigation.close_by">
-                    <p class="font-weight-normal font-size-sm text-dark-50 pb-2">Diselesaikan oleh {{ selectedMitigation.rel_close_by }}, pada {{ selectedMitigation.close_at | parse('longDateTime') }}</p>
+                    <p class="font-weight-normal font-size-sm text-dark-50 pb-2">Dilakukan oleh {{ selectedMitigation.rel_close_by }}, pada {{ selectedMitigation.close_at | parse('longDateTime') }}</p>
                     <span v-if="selectedMitigation.status_code === 'na'" :class="selectedMitigation.status_code === 'close' ? 'label-success' : 'label-danger'" class="label label-pill label-inline">{{ selectedMitigation.status_code === 'close' ? 'Mitigasi Selesai' : 'Not Applicable' }}</span>
                   </template>
                   <template v-else>
                     <template v-if="$_sys.isAllowed('update-mapping-potency-issues-mitigations')">
                       <p class="font-weight-normal text-dark-50 pb-0 pt-1">
                         Klik
-                        <span class="font-weight-bolder text-success">Selesai</span>
-                        untuk menyelesaikan mitigasi yang dilakukan
+                        <span class="font-weight-bolder text-success">Sudah Dilakukan</span>
+                        untuk memperbarui status mitigasi menjadi sudah dilakukan
                       </p>
-                      <button @click="updateStatusMitigation('close', selectedMitigation.id)" class="btn btn-sm btn-success mb-5">Selesai</button>
+                      <button @click="updateStatusMitigation('close', selectedMitigation.id)" class="btn btn-sm btn-success mb-5">Sudah Dilakukan</button>
                       <button @click="updateStatusMitigation('na', selectedMitigation.id)" class="btn btn-sm btn-danger mb-5">Not Applicable</button>
                     </template>
-                    <p v-else class="font-weight-normal text-dark-50 pb-0 pt-1">Menunggu penyelesaian mitigasi proyek</p>
+                    <p v-else class="font-weight-normal text-dark-50 pb-0 pt-1">Menunggu mitigasi dilakukan</p>
                   </template>
                 </div>
                 <!--end::Info-->
