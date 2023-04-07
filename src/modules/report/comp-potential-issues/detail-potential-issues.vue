@@ -52,7 +52,7 @@
         </div>
         <div class="v-separator mx-1 px-2" style="height:79px"></div>
         <div class="text-center">
-          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Sub Risk Register</span>
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Status Sub Risk Register</span>
           <div class="d-flex">
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
               Belum Dimitigasi
@@ -76,7 +76,7 @@
         </div>
         <div class="v-separator mx-1 px-2" style="height:79px"></div>
         <div class="text-center">
-          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Status Mitigasi</span>
           <div class="d-flex">
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
               Belum Dilakukan
@@ -224,8 +224,9 @@
             <h3 class="card-title align-items-start flex-column m-0">
               <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu</span>
             </h3>
-            <div v-if="activeReport.status_code === 'open'" class="card-toolbar">
-              <button @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
+            <div class="card-toolbar">
+              <button v-if="activeReport.status_code === 'open'" @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
+              <button v-else @click="loadHistory(activeReport)" class="btn btn-outline-info font-weight-bold font-size-sm">History Laporan</button>
             </div>
           </div>
           <div class="card-body pt-3 position-relative">
