@@ -186,7 +186,7 @@
               <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto" />
             </template>
             <div v-if="recaptProject" class="text-center">
-            <hr />
+              <hr />
               <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
               <div class="d-flex">
                 <div class="font-weight-bold text-center text-muted font-size-sm">
@@ -264,7 +264,7 @@
                   </div> -->
                   <div class="flex-fill">
                     <span class="d-block font-size-lg font-weight-bold">{{ r.rel_sub_issue_id }}</span>
-                    <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-md font-weight-boldest label-inline mr-2">{{ r.status_code | parse('status_code_form') }}</span>
+                    <span :class="bgMitigationStatus('label', r.status_code)" class="label label-md font-weight-boldest label-inline mr-2">{{ r.status_code | parse('status_code_form') }}</span>
                     <span class="font-size-sm text-muted">
                       Kode {{ r.sub_issue_code }} -
                       <span class="text-italic">{{ r.rel_category_id }} > {{ r.rel_issue_id }}</span>
@@ -318,7 +318,7 @@
           </div>
           <div class="card-body pt-3 position-relative">
             <div v-if="$_sys.isAllowed('bypass-level')" class="form-group">
-              <label  class="font-size-lg font-weight-bolder text-uppercase mb-3">Pilih level Mitigasi :</label>
+              <label class="font-size-lg font-weight-bolder text-uppercase mb-3">Pilih level Mitigasi :</label>
               <div class="row ml-3">
                 <div v-for="(l, i) in levelData" :key="i + '-levelData'" class="col-lg-4">
                   <label class="option option-plain mb-0">
@@ -461,6 +461,33 @@
           </div>
         </template>
       </b-modal>
+      <b-modal id="history-report-status" hide-footer centered size="lg">
+        <template #modal-header="{ close }">
+          <h5 v-if="activeReport" class="card-title d-flex align-items-start flex-column mb-0">
+            <span class="card-label font-weight-bolder text-dark text-capitalize">Histori Laporan Tanggal {{ activeReport.date | parse('longDate') }}</span>
+          </h5>
+          <button type="button" class="close" aria-label="Close" @click="close()">×</button>
+        </template>
+        <template v-if="historyList">
+          <div class="small-scroll pr-3" style="max-height:70vh;overflow-y:auto">
+            <div class="timeline timeline-2">
+              <div class="timeline-bar"></div>
+              <div v-for="(h, i) in historyList" :key="i+'-historyList'" class="timeline-item align-items-start">
+                <div class="timeline-badge" style="margin-top:.35em" :class="bgMitigationStatus('bg', h.status_code)"></div>
+                <div class="timeline-content d-flex align-items-start justify-content-between">
+                  <span class="mr-3">
+                    <span class="">{{ h.description }}</span>
+                  </span>
+                  <div>
+                    <span class="nowrap text-muted text-right">{{ h.created_at | parse('longDateTime') }}</span>
+                    <span class="d-block text-muted text-right">Oleh {{ h.rel_created_by }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </b-modal>
     </div>
   </section>
 </template>
@@ -488,7 +515,8 @@ export default {
       createForm: {
         level: 3
       },
-      selectedTree: []
+      selectedTree: [],
+      historyList: null
     }
   },
   watch: {
@@ -518,6 +546,17 @@ export default {
     this.getAllData()
   },
   methods: {
+    loadHistory () {
+      this.$_api
+        .get('log-activity-potency-issues/dataset', { report_id: this.activeReport.id })
+        .then((res) => {
+          this.historyList = res.data
+          this.$bvModal.show('history-report-status')
+        })
+        .catch((err) => {
+          this.$_alert.error(err)
+        })
+    },
     getAllData () {
       this.loadProject()
       this.loadReportList()
