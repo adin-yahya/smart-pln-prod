@@ -540,6 +540,7 @@ export default {
           .format('MMMM YYYY'),
         activeTab: 'report'
       },
+      activeFilter: null,
       tabList: [
         { id: 'report', label: 'Statistik Potensi Isu' },
         { id: 'monitoring', label: 'Monitoring Potensi Isu' },
@@ -733,6 +734,7 @@ export default {
         if (e.project_id.code) newFilter.project_id = e.project_id.code
         newFilter.start_periode = moment(e.start_periode, 'MMMM YYYY').format('YYYY-MM-DD')
         newFilter.end_periode = moment(e.end_periode, 'MMMM YYYY').format('YYYY-MM-DD')
+        this.activeFilter = newFilter
         const noFilter = ['mapData']
         for (let i = 0; i < Object.keys(this.api).length; i++) {
           const el = Object.keys(this.api)[i]
@@ -920,7 +922,7 @@ export default {
       window.open(routeData.href, '_blank')
     },
     exportExcel (api, filename) {
-      this.$_api.downloadFile(api, null, filename + '.xlsx').then(
+      this.$_api.downloadFile(api, this.activeFilter, filename + '.xlsx').then(
         (res) => {
           this.isLoadingExport = false
         },
