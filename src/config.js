@@ -8,7 +8,7 @@ const app = {
   logo: {
     sm: './static/img/logo/240x240.png',
     md: './static/img/logo/480x480.png',
-    lg: './static/img/logo/pln-bumn.png'
+    lg: './static/img/logo/720x720.png'
   },
   server: {
     stagging: 'https://smart-pln.pttas.xyz/api/',

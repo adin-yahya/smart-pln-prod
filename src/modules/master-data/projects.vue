@@ -1,12 +1,13 @@
 <template>
   <tas-base-crud ref="crudProject" :config="config">
     <template v-slot:detail-body-header="data">
-      <div v-if="data.rowData" class="row">
-        <div class="col-auto p-5">
+      <ProjectsRecapt v-if="data.rowData" :id="data.rowData.id" />
+      <div v-if="data.rowData" class="row mb-3">
+        <div class="col-auto px-5">
           <span class="d-block font-weight-bolder font-size-lg mb-4">Tahap proyek saat ini</span>
           <span class="label label-outline-primary label-lg label-inline font-size-h6 px-8 py-6 font-weight-bold mb-2" style="border-radius: 23px;">{{ data.rowData.current_status || 'Tidak Diketahui' }}</span>
         </div>
-        <div class="col p-5">
+        <div class="col px-5">
           <div class="row h-100">
             <div v-for="(d, i) in dateProject" :key="i + '-dateProject'" class="d-flex flex-column px-6">
               <span class="d-block font-weight-bold font-size-lg">{{ d.label }}</span>
@@ -64,8 +65,12 @@
   </tas-base-crud>
 </template>
 <script>
+import ProjectsRecapt from './comp-projects/projects-recapt.vue'
 export default {
   name: 'crud-projects',
+  components: {
+    ProjectsRecapt
+  },
   data () {
     return {
       dateProject: [

@@ -64,7 +64,7 @@
         </div>
         <template v-if="mainFilter.activeTab === 'report'">
           <div v-if="api.statistic.data" style="background: linear-gradient(180deg, #2F6879 0%, #174350 100%);border-radius: 8px;" class="mb-3 d-flex flex-wrap align-items-center justify-content-between py-4">
-            <div style="flex: 1 1 0px; border-right: 1px solid #fff" class="pointer text-white min-w-120px pl-5 pr-0">
+            <div style="flex: 1 1 0px; border-right: 1px solid #fff" class="pointer text-white min-w-120px pl-5 mr-5">
               <span @click="redirect('units')" class="d-flex align-items-center font-size-h6 font-weight-bold">
                 <span class="min-w-30px pr-3 text-center font-size-h3">{{ api.statistic.data.unit | parse('number') }}</span>
                 Unit
@@ -80,14 +80,14 @@
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Potensi Isu</span>
-              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_isu | parse('number') }}</span>
+              <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.potency_issue[0].total | parse('number') }}</span>
               <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>
             </div>
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
-              <span class="d-block font-size-h6 font-weight-bold">Kategori Risk</span>
+              <span class="d-block font-size-h6 font-weight-bold">Kategori Potensi Isu</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_kategori_isu | parse('number') }}</span>
               <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
@@ -105,7 +105,7 @@
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Sub Risk Register</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_sub_isu | parse('number') }}</span>
-              <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
+              <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>
@@ -119,10 +119,9 @@
               </div>
             </div>
           </div>
-          <div v-if="api.statistic.data" class="row mb-3">
+          <!-- <div v-if="api.statistic.data" class="row mb-3">
             <div class="col-4">
               <div class="card card-custom bg-danger card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -130,12 +129,10 @@
                     <span class="font-size-h5 align-self-center pl-2">Belum Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
             <div class="col-4 pl-0">
               <div class="card card-custom bg-warning card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -143,12 +140,10 @@
                     <span class="font-size-h5 align-self-center pl-2">Sedang Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
             <div class="col-4 pl-0">
               <div class="card card-custom bg-success card-stretch">
-                <!--begin::Body-->
                 <div class="card-body px-5 py-4">
                   <span class="font-weight-bold text-white font-size-sm">Laporan Potensi Isu</span>
                   <span class="card-title d-flex font-weight-bolder text-white font-size-h2 mb-0 mt-0 d-block">
@@ -156,14 +151,13 @@
                     <span class="font-size-h5 align-self-center pl-2">Sudah Dimitigasi</span>
                   </span>
                 </div>
-                <!--end::Body-->
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row mt-5">
             <div class="col-7">
               <div class="mb-5">
-                <h6 class="font-weight-bolder mb-1">Grafik Mitigasi berdasarkan Status</h6>
+                <h6 class="font-weight-bolder mb-1">Grafik Mitigasi Unit berdasarkan Status</h6>
                 <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
               </div>
               <apexchart v-if="api.statusChart.data" :height="280" :options="trendOption" :series="api.statusChart.data"></apexchart>
@@ -194,7 +188,7 @@
           </div>
           <GmapMap ref="mapRefsdashboard" class="h-500px" :options="mapOption" :center="mapCenter" :zoom="zoomNum">
             <GmapInfoWindow v-if="infoContent" :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen = false">
-              <div>
+              <div class="pointer" @click="redirect('projects', null, { view: 'detail', id: infoContent.id })">
                 <span class="d-block font-weight-bold text-dark mt-2">{{ infoContent.project_name }} - Tahun {{ infoContent.year | parse('year') }}</span>
                 <span class="d-block font-weight-bold text-muted mb-2">Supervisor: {{ infoContent.rel_unit_id }}</span>
                 <table class="table-borderless">
@@ -260,11 +254,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama Unit</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -278,7 +272,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>
@@ -292,9 +286,9 @@
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
@@ -326,11 +320,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama PST</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -344,7 +338,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>
@@ -366,9 +360,9 @@
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
@@ -400,11 +394,11 @@
                   <tr>
                     <th class="text-center v-center min-w-250px" rowspan="2">Nama Proyek</th>
                     <th class="text-center v-center nowrap-table" rowspan="2">
-                      Total
+                      Laporan
                       <br />
                       Potensi Isu
                     </th>
-                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Penyelesaian Isu</th>
+                    <th class="text-center nowrap-table" colspan="3">Monitoring Status Sub Risk</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Status Mitigasi</th>
                     <th class="text-center nowrap-table" colspan="4">Monitoring Risk</th>
                   </tr>
@@ -418,7 +412,7 @@
                     <th class="text-center nowrap-table">Mitigasi Selesai</th>
                     <th class="text-center nowrap-table">Mitigasi NA</th>
                     <!-- ================== -->
-                    <th class="text-center nowrap-table">Kategori Risk</th>
+                    <th class="text-center nowrap-table">Kategori Potensi Isu</th>
                     <th class="text-center nowrap-table">Risk Register</th>
                     <th class="text-center nowrap-table">Sub Risk Register</th>
                     <th class="text-center nowrap-table">Mitigasi</th>
@@ -434,14 +428,14 @@
                         "
                         class="pointer"
                       > -->
-                      <td>
+                      <td @click="redirect('potential-issues', null, { view: 'detail', id: d.id })" class="pointer">
                         <div class="text-line-2 text-primary font-weight-bolder">{{ d.name }}</div>
                       </td>
                       <td class="nowrap-table text-center v-center">{{ d.total_report | parse('number') }}</td>
 
-                      <td class="nowrap-table text-center v-center">{{ d.report_open | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_on_going | parse('number') }}</td>
-                      <td class="nowrap-table text-center v-center">{{ d.report_close | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_open | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_on_going | parse('number') }}</td>
+                      <td class="nowrap-table text-center v-center">{{ d.potency_issue_close | parse('number') }}</td>
 
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_open | parse('number') }}</td>
                       <td class="nowrap-table text-center v-center">{{ d.mitigation_on_going | parse('number') }}</td>
@@ -463,7 +457,7 @@
           <div class="position-relative mt-6">
             <!-- <hr style="border-style: dashed;" /> -->
           <div v-if="api.treeData.data" class="mb-5">
-            <h6 class="font-weight-bolder mb-1">Potensi Isu & Mitigasi Proyek</h6>
+            <h6 class="font-weight-bolder mb-1">Rekap Potensi Isu & Mitigasi Proyek</h6>
             <span class="font-weight-bold text-muted">Periode {{ mainFilter.start_periode }} s/d {{ mainFilter.end_periode }}</span>
             <div class="pl-3 mt-3">
               <template v-for="(t, i) in api.treeData.data">
@@ -546,6 +540,7 @@ export default {
           .format('MMMM YYYY'),
         activeTab: 'report'
       },
+      activeFilter: null,
       tabList: [
         { id: 'report', label: 'Statistik Potensi Isu' },
         { id: 'monitoring', label: 'Monitoring Potensi Isu' },
@@ -656,7 +651,7 @@ export default {
           enabledOnSeries: [0]
         },
         stroke: {
-          width: [4, 0, 0, 0]
+          width: [4, 0, 0, 0, 0]
         },
         legend: {
           horizontalAlign: 'left',
@@ -739,6 +734,7 @@ export default {
         if (e.project_id.code) newFilter.project_id = e.project_id.code
         newFilter.start_periode = moment(e.start_periode, 'MMMM YYYY').format('YYYY-MM-DD')
         newFilter.end_periode = moment(e.end_periode, 'MMMM YYYY').format('YYYY-MM-DD')
+        this.activeFilter = newFilter
         const noFilter = ['mapData']
         for (let i = 0; i < Object.keys(this.api).length; i++) {
           const el = Object.keys(this.api)[i]
@@ -746,23 +742,23 @@ export default {
         }
         this.$nextTick((nextTick) => {
           this.getAllData()
-          if (e.activeTab === 'report') {
-            this.$refs.mapRefsdashboard.$mapPromise.then((map) => {
-              const featureStyleOptions = {
-                strokeColor: '#2d3a50',
-                strokeOpacity: 1.0,
-                strokeWeight: 2.0,
-                fillColor: '#f24b5f',
-                fillOpacity: 0
-              }
-              let featureLayer = map.getFeatureLayer('COUNTRY')
-              featureLayer.style = (options) => {
-                if (options.feature.placeId === 'ChIJtwRkSdcHTCwRhfStG-dNe-M') {
-                  return featureStyleOptions
-                }
-              }
-            })
-          }
+          // if (e.activeTab === 'report') {
+          //   this.$refs.mapRefsdashboard.$mapPromise.then((map) => {
+          //     const featureStyleOptions = {
+          //       strokeColor: '#2d3a50',
+          //       strokeOpacity: 1.0,
+          //       strokeWeight: 2.0,
+          //       fillColor: '#f24b5f',
+          //       fillOpacity: 0
+          //     }
+          //     let featureLayer = map.getFeatureLayer('COUNTRY')
+          //     featureLayer.style = (options) => {
+          //       if (options.feature.placeId === 'ChIJtwRkSdcHTCwRhfStG-dNe-M') {
+          //         return featureStyleOptions
+          //       }
+          //     }
+          //   })
+          // }
         })
       }
     }
@@ -784,10 +780,9 @@ export default {
           end_periode: moment()
             .set('date', 1)
             .format('MMMM YYYY'),
-          activeTab: 'report'
+          activeTab: this.mainFilter.activeTab
         }
       )
-      console.log('reload', this.mainFilter)
     },
     disablePeriodBefore (date) {
       let start = moment(moment(this.mainFilter.start_periode, 'MMMM YYYY').toDate())
@@ -917,16 +912,17 @@ export default {
         this.currentMidx = idx
       }
     },
-    redirect (to, data = null) {
+    redirect (to, data = null, query = {}) {
       let param = {
         view: 'list'
       }
       if (data) param.filters = JSON.stringify(data)
+      param = {...param, ...query}
       const routeData = this.$router.resolve({ name: to, query: param })
       window.open(routeData.href, '_blank')
     },
     exportExcel (api, filename) {
-      this.$_api.downloadFile(api, null, filename + '.xlsx').then(
+      this.$_api.downloadFile(api, this.activeFilter, filename + '.xlsx').then(
         (res) => {
           this.isLoadingExport = false
         },

@@ -9,6 +9,7 @@
           <img :src="$_config.logo.lg" alt="Logo" class="max-h-85px mb-5" />
           <div class="text-center">
             <!-- <h3 class="font-weight-bolder text-dark font-size-h3 font-size-h3-lg mb-2">Aplikasi {{ $_config.name }}</h3> -->
+            <span class="d-block text-center font-weight-bold text-dark font-size-lg font-size-span-lg mb-0">{{ $_config.name }}</span>
             <span class="font-weight-bold text-dark font-size-lg font-size-span-lg mb-0">{{ $_config.fullname }}</span>
             <hr class="my-1" style="border-color: #000" />
             <span class="font-weight-bold text-dark font-size-lg font-size-span-lg mb-0 text-italic">{{ $_config.company }}</span>
@@ -16,7 +17,7 @@
         </router-link>
         <!--end::Logo-->
         <!--begin::Aside body-->
-        <div class="d-flex flex-column-fluid flex-column flex-center">
+        <div class="d-flex flex-column-fluid flex-column flex-center mt-5">
           <!--begin::Signin-->
           <div v-if="state === 'signin'" :class="[state === 'signin' ? 'd-block' : 'd-none']" class="login-form login-signin py-11 pt-lg-0">
             <!--begin::Form-->

@@ -10,6 +10,9 @@ Vue.filter('parse', (value, id) => {
       case 'active':
         toReturn = Number(value) === 1 ? 'Data Aktif' : 'Non Aktif'
         break
+      case 'noBR':
+        toReturn = value.replace(/<br>/g, ' ')
+        break
       case 'expired':
         toReturn = value === 1 ? 'Aktif' : 'Expired'
         break

@@ -42,49 +42,6 @@ export default {
           delete: false
         },
         fields: [
-          {
-            id: 'employee_id',
-            label: 'Tenaga Kerja',
-            methods: {
-              list: { transform: 'nullValue' },
-              detail: { transform: 'nullValue' },
-              create: {
-                setter: 'employees',
-                getter: 'employees',
-                type: 'lookup-radio',
-                validation: ['required'],
-                option: {
-                  filterAPI: { is_user: false, sort_by: 'fullname', sort: 'ASC', active: 1, is_employee_active: true },
-                  list_pointer: {
-                    label: 'fullname', code: 'id', display: ['employee_code', 'fullname']
-                  }
-                }
-              },
-              update: {
-                setter: 'employees',
-                getter: 'employees',
-                type: 'lookup-radio',
-                validation: ['required'],
-                option: {
-                  filterAPI: { is_user: false, sort_by: 'fullname', sort: 'ASC', active: 1, is_employee_active: true },
-                  list_pointer: {
-                    label: 'fullname', code: 'id', display: ['employee_code', 'fullname']
-                  }
-                }
-              },
-              filter: {
-                setter: 'employees',
-                getter: 'employees',
-                type: 'lookup-radio',
-                option: {
-                  filterAPI: { is_user: true, sort_by: 'fullname', sort: 'ASC' },
-                  list_pointer: {
-                    label: 'fullname', code: 'id', display: ['employee_code', 'fullname']
-                  }
-                }
-              }
-            }
-          },
           { id: 'fullname', label: 'Nama Lengkap', methods: { list: true, detail: true, create: false, update: false, filter: false } },
           { id: 'username', label: 'Username', methods: { list: true, detail: true, create: true, update: true, filter: false } },
           { id: 'password',
@@ -150,12 +107,26 @@ export default {
               }
             }
           },
+          // disabled Temp Field
+          { id: 'email', label: 'Email', methods: { list: true, detail: true, create: false, update: false, filter: false } },
+          { id: 'img_photo_user', label: 'Foto Pengguna', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          // disabled Field
+          { id: 'status_code', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'email_verified_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'last_login_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'employee_id', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'id', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'created_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+
           {
             id: 'unit_id',
-            label: 'Nama Unit',
+            label: 'Pendaftaran Unit',
             methods: {
-              list: { transform: 'nullValue' },
-              detail: { transform: 'nullValue' },
+              list: { view_data: 'rel_unit_id', transform: 'nullValue' },
+              detail: { view_data: 'rel_unit_id', transform: 'nullValue' },
               create: {
                 setter: 'units',
                 getter: 'units',
@@ -197,23 +168,6 @@ export default {
                 }
               }
             }
-          },
-          // disabled Temp Field
-          { id: 'email', label: 'Email', methods: { list: true, detail: true, create: false, update: false, filter: false } },
-          { id: 'img_photo_user', label: 'Foto Pengguna', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          // disabled Field
-          { id: 'status_code', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'email_verified_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'last_login_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'id', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'updated_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'created_by', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'created_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'updated_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          {
-            id: 'register_unit_id',
-            label: 'Pendaftaran Unit',
-            methods: { list: { view_data: 'rel_register_unit_id' }, detail: { view_data: 'rel_register_unit_id' }, create: false, update: false, filter: false }
           },
           {
             id: 'register_pst_id',

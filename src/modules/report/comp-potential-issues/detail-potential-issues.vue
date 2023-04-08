@@ -22,34 +22,10 @@
     <div v-if="recaptProject" class="mb-3 rounded py-5 px-4 bg-white">
       <div class="d-flex">
         <div class="text-center">
-          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
-          <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Belum Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_open || 0 }}
-              </span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sedang Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_on_going || 0 }}
-              </span>
-            </div>
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Sudah Dimitigasi
-              <span class="d-block text-primary font-size-h2 font-weight-bolder">
-                {{ recaptProject.report_close || 0 }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="v-separator mx-3 px-3" style="height:79px"></div>
-        <div class="text-center">
           <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Risk Register</span>
-          <div class="d-flex">
-            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Kategori Risk
+          <div class="d-flex align-items-end">
+            <div class="font-weight-bold text-center text-muted font-size-sm">
+              Kategori Potensi Isu
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.total_category || 0 }}
               </span>
@@ -74,9 +50,33 @@
             </div>
           </div>
         </div>
-        <div class="v-separator mx-3 px-3" style="height:79px"></div>
+        <div class="v-separator mx-1 px-2" style="height:79px"></div>
         <div class="text-center">
-          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Mitigasi</span>
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Status Sub Risk Register</span>
+          <div class="d-flex">
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Belum Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_open || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sedang Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_on_going || 0 }}
+              </span>
+            </div>
+            <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+              Sudah Dimitigasi
+              <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                {{ recaptProject.potency_issue_close || 0 }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="v-separator mx-1 px-2" style="height:79px"></div>
+        <div class="text-center">
+          <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Status Mitigasi</span>
           <div class="d-flex">
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
               Belum Dilakukan
@@ -91,7 +91,7 @@
               </span>
             </div>
             <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
-              Mitigasi Selesai
+              Sudah Dilakukan
               <span class="d-block text-primary font-size-h2 font-weight-bolder">
                 {{ recaptProject.mitigation_close || 0 }}
               </span>
@@ -112,36 +112,105 @@
           <div class="card-header border-0 pt-5">
             <h3 class="card-title align-items-start flex-column">
               <span class="card-label font-weight-bolder text-dark">Daftar Laporan Potensi Isu</span>
-              <span class="text-muted mt-3 font-weight-bold font-size-sm">
+              <span class="text-muted mt-1 font-weight-bold font-size-sm">
                 Klik daftar dibawah ini untuk melihat detail laporan
               </span>
             </h3>
           </div>
-          <div class="card-body pt-3 ">
+          <div class="card-body pt-3">
             <template v-if="reportList && reportList.length">
+              <hr class="mt-0" />
               <ul class="list-unstyled mb-0">
-                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport.id === l.id }" @click="activeReport = Object.assign({}, l)" class="pointer border-1 py-2 rounded-sm px-4">
+                <li v-for="(l, i) in reportList" :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport && activeReport.id === l.id }" @click="setReportActive(l)" class="pointer border-1 py-2 rounded-sm px-4">
                   <div class="d-flex">
                     <div class="pr-2">{{ i + 1 }}.</div>
                     <div class="flex-fill">
                       <span class="d-block">Tanggal {{ l.date | parse('longDate') }}</span>
                       <div>
                         <span class="font-size-sm text-muted text-italic">Level {{ l.level }}</span>
-                        <span class="font-size-sm text-muted">-</span>
-                        <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
                       </div>
                     </div>
-                    <div :class="{ 'rotate-right': activeReport.id === l.id }" class="smooth align-self-center">
+                    <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', l.status_code)" class="mr-2 w-20px min-w-20px h-20px rounded-sm align-self-center">
+                      &nbsp;
+                    </div>
+                    <div :class="{ 'rotate-right': activeReport && activeReport.id === l.id }" class="smooth align-self-center">
                       <i class="ri-arrow-down-s-line"></i>
                     </div>
                   </div>
                 </li>
+                <!-- <template v-for="(l, i) in reportList">
+                  <li :key="i + '-reportList'" :class="{ 'bg-light-info': activeReport && activeReport.id === l.id }" @click="setReportActive(l)" class="pointer py-2 rounded-sm px-4">
+                    <div class="d-flex">
+                      <div class="flex-fill">
+                        <span :class="bgMitigationStatus('text', l.status_code)" class="font-size-sm font-weight-bold">{{ l.status_code | parse('status_code_form') }}</span>
+                        <span class="d-block font-size-lg font-weight-bold">Report Tanggal {{ l.date | parse('longDate') }} - Level {{ l.level }}</span>
+                      </div>
+                      <div :class="{ 'rotate-right': activeReport && activeReport.id === l.id }" class="smooth align-self-end">
+                        <i class="ri-arrow-down-s-line"></i>
+                      </div>
+                    </div>
+                    <div class="font-size-sm pl-2">
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sub Risk Register</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Mitigasi</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Belum dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sedang dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Sudah Dilakukan</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                      <div class="d-flex justify-content-between pt-1" style="border-bottom: 1px solid #e4e6ef">
+                        <span class="d-block text-mutedX min-w-175px">Not Applicable</span>
+                        <span class="font-weight-bold">99</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li :key="i + '-reportList-hr'">
+                    <hr style="border-style:dashed" />
+                  </li>
+                </template> -->
               </ul>
             </template>
             <template v-else>
-              <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto">
+              <img src="/static/img/default/no_data_vertical.svg" class="d-block text-center w-50 mx-auto" />
             </template>
+            <div v-if="recaptProject" class="text-center">
+              <hr />
+              <span class="font-weight-lg font-weight-bolder d-block mb-1">Rekapitulasi Laporan</span>
+              <div class="d-flex">
+                <div class="font-weight-bold text-center text-muted font-size-sm">
+                  Belum Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_open || 0 }}
+                  </span>
+                </div>
+                <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                  Sedang Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_on_going || 0 }}
+                  </span>
+                </div>
+                <div class="font-weight-bold text-center text-muted font-size-sm ml-5">
+                  Sudah Dimitigasi
+                  <span class="d-block text-primary font-size-h2 font-weight-bolder">
+                    {{ recaptProject.report_close || 0 }}
+                  </span>
+                </div>
+              </div>
+            </div>
             <hr />
+
             <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
               <i class="ri-add-circle-fill"></i>
               Tambah Laporan Baru
@@ -150,30 +219,58 @@
         </div>
       </div>
       <div v-if="activeReport && activeReport.id !== -1" class="col-8">
-        <div v-if="activeReport" class="card card-custom">
+        <div v-if="activeReport" class="card card-custom mb-3">
           <div class="card-header align-items-center min-h-20px border-0 pt-5">
             <h3 class="card-title align-items-start flex-column m-0">
-              <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu - Tanggal {{ activeReport.date | parse('longDate') }}</span>
+              <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu</span>
             </h3>
             <div class="card-toolbar">
-              <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-xl font-weight-boldest label-inline">{{ activeReport.status_code | parse('status_code_form') }}</span>
+              <button v-if="activeReport.status_code === 'open'" @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
+              <button v-else @click="loadHistory(activeReport)" class="btn btn-outline-info font-weight-bold font-size-sm">History Laporan</button>
             </div>
           </div>
+          <div class="card-body pt-3 position-relative">
+            <table class="table table-detailX mb-0">
+              <tbody>
+                <tr>
+                  <th class="nowrap-table pl-0">Tanggal Dibuat</th>
+                  <th class="nowrap-table pl-0">:</th>
+                  <td>{{ activeReport.date | parse('longDate') }}</td>
+                </tr>
+                <tr>
+                  <th class="nowrap-table pl-0">Level Mitigasi</th>
+                  <th class="nowrap-table pl-0">:</th>
+                  <td>Level {{ activeReport.level }}</td>
+                </tr>
+                <tr>
+                  <th class="nowrap-table pl-0 v-center">Status Laporan</th>
+                  <th class="nowrap-table pl-0 v-center">:</th>
+                  <td>
+                    <span :class="bgMitigationStatus('label', activeReport.status_code)" class="label label-xl font-weight-boldest label-inline">{{ activeReport.status_code | parse('status_code_form') }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div v-if="activeReport" class="card card-custom">
           <div class="card-body pt-3 position-relative">
             <b-overlay :show="loadingRisk" no-wrap rounded="sm" />
             <ul v-if="riskList && activeRisk" class="list-unstyled mb-0">
               <li v-for="(r, i) in riskList" :key="i + '-riskList'" @click="activeRisk = r" class="pointer border-1 py-2 rounded-sm">
                 <div class="d-flex">
-                  <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px min-w-20px h-20px rounded-sm">
+                  <!-- <div style="flex-wrap: nowrap" :class="bgMitigationStatus('bg', r.status_code)" class="mr-2 mt-1 bg-primary w-20px min-w-20px h-20px rounded-sm">
                     &nbsp;
-                  </div>
+                  </div> -->
                   <div class="flex-fill">
                     <span class="d-block font-size-lg font-weight-bold">{{ r.rel_sub_issue_id }}</span>
+                    <span :class="bgMitigationStatus('label', r.status_code)" class="label label-md font-weight-boldest label-inline mr-2">{{ r.status_code | parse('status_code_form') }}</span>
                     <span class="font-size-sm text-muted">
                       Kode {{ r.sub_issue_code }} -
                       <span class="text-italic">{{ r.rel_category_id }} > {{ r.rel_issue_id }}</span>
                     </span>
                   </div>
+
                   <div :class="{ 'rotate-bottom': activeRisk.id === r.id }" class="smooth align-self-center">
                     <i class="ri-arrow-right-s-line"></i>
                   </div>
@@ -221,7 +318,7 @@
           </div>
           <div class="card-body pt-3 position-relative">
             <div v-if="$_sys.isAllowed('bypass-level')" class="form-group">
-              <label class="">Pilih level Mitigasi :</label>
+              <label class="font-size-lg font-weight-bolder text-uppercase mb-3">Pilih level Mitigasi :</label>
               <div class="row ml-3">
                 <div v-for="(l, i) in levelData" :key="i + '-levelData'" class="col-lg-4">
                   <label class="option option-plain mb-0">
@@ -243,9 +340,9 @@
                 </div>
               </div>
             </div>
-            <span class="">Pilih Risk Register :</span>
-            <div v-for="(n, i) in treeData" class="pl-1" :key="i + '-nodes'">
-              <tree-node @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
+            <span class="font-size-lg font-weight-bolder text-uppercase">Pilih Risk Register :</span>
+            <div v-for="(n, i) in treeData" class="pl-0" :key="i + '-nodes'">
+              <tree-node :checked="!reportList.length" @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
             </div>
             <hr />
             <button @click="newReport()" class="btn btn-block btn-success">Simpan & Tambahkan Laporan</button>
@@ -339,26 +436,53 @@
                 <!--begin::Info-->
                 <div class="timeline-desc timeline-desc-light-success pt-0">
                   <div class="d-flex align-items-center justify-content-between mb-1">
-                    <span class="font-weight-bolder text-success">Selesaikan Mitigasi</span>
+                    <span class="font-weight-bolder text-success">Mitigasi Sudah Dilakukan</span>
                   </div>
                   <template v-if="selectedMitigation.close_by">
-                    <p class="font-weight-normal font-size-sm text-dark-50 pb-2">Diselesaikan oleh {{ selectedMitigation.rel_close_by }}, pada {{ selectedMitigation.close_at | parse('longDateTime') }}</p>
+                    <p class="font-weight-normal font-size-sm text-dark-50 pb-2">Dilakukan oleh {{ selectedMitigation.rel_close_by }}, pada {{ selectedMitigation.close_at | parse('longDateTime') }}</p>
                     <span v-if="selectedMitigation.status_code === 'na'" :class="selectedMitigation.status_code === 'close' ? 'label-success' : 'label-danger'" class="label label-pill label-inline">{{ selectedMitigation.status_code === 'close' ? 'Mitigasi Selesai' : 'Not Applicable' }}</span>
                   </template>
                   <template v-else>
                     <template v-if="$_sys.isAllowed('update-mapping-potency-issues-mitigations')">
                       <p class="font-weight-normal text-dark-50 pb-0 pt-1">
                         Klik
-                        <span class="font-weight-bolder text-success">Selesai</span>
-                        untuk menyelesaikan mitigasi yang dilakukan
+                        <span class="font-weight-bolder text-success">Sudah Dilakukan</span>
+                        untuk memperbarui status mitigasi menjadi sudah dilakukan
                       </p>
-                      <button @click="updateStatusMitigation('close', selectedMitigation.id)" class="btn btn-sm btn-success mb-5">Selesai</button>
+                      <button @click="updateStatusMitigation('close', selectedMitigation.id)" class="btn btn-sm btn-success mb-5">Sudah Dilakukan</button>
                       <button @click="updateStatusMitigation('na', selectedMitigation.id)" class="btn btn-sm btn-danger mb-5">Not Applicable</button>
                     </template>
-                    <p v-else class="font-weight-normal text-dark-50 pb-0 pt-1">Menunggu penyelesaian mitigasi proyek</p>
+                    <p v-else class="font-weight-normal text-dark-50 pb-0 pt-1">Menunggu mitigasi dilakukan</p>
                   </template>
                 </div>
                 <!--end::Info-->
+              </div>
+            </div>
+          </div>
+        </template>
+      </b-modal>
+      <b-modal id="history-report-status" hide-footer centered size="lg">
+        <template #modal-header="{ close }">
+          <h5 v-if="activeReport" class="card-title d-flex align-items-start flex-column mb-0">
+            <span class="card-label font-weight-bolder text-dark text-capitalize">Histori Laporan Tanggal {{ activeReport.date | parse('longDate') }}</span>
+          </h5>
+          <button type="button" class="close" aria-label="Close" @click="close()">×</button>
+        </template>
+        <template v-if="historyList">
+          <div class="small-scroll pr-3" style="max-height:70vh;overflow-y:auto">
+            <div class="timeline timeline-2">
+              <div class="timeline-bar"></div>
+              <div v-for="(h, i) in historyList" :key="i+'-historyList'" class="timeline-item align-items-start">
+                <div class="timeline-badge" style="margin-top:.35em" :class="bgMitigationStatus('bg', h.status_code)"></div>
+                <div class="timeline-content d-flex align-items-start justify-content-between">
+                  <span class="mr-3">
+                    <span class="">{{ h.description }}</span>
+                  </span>
+                  <div>
+                    <span class="nowrap text-muted text-right">{{ h.created_at | parse('longDateTime') }}</span>
+                    <span class="d-block text-muted text-right">Oleh {{ h.rel_created_by }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -391,7 +515,8 @@ export default {
       createForm: {
         level: 3
       },
-      selectedTree: []
+      selectedTree: [],
+      historyList: null
     }
   },
   watch: {
@@ -421,6 +546,17 @@ export default {
     this.getAllData()
   },
   methods: {
+    loadHistory () {
+      this.$_api
+        .get('log-activity-potency-issues/dataset', { report_id: this.activeReport.id })
+        .then((res) => {
+          this.historyList = res.data
+          this.$bvModal.show('history-report-status')
+        })
+        .catch((err) => {
+          this.$_alert.error(err)
+        })
+    },
     getAllData () {
       this.loadProject()
       this.loadReportList()
@@ -444,7 +580,7 @@ export default {
         .then((res) => {
           this.reportList = res.data
           if (res.data.length) {
-            if (!this.activeReport || this.activeReport.id === -1) this.activeReport = res.data[0]
+            if (!this.activeReport || this.activeReport.id === -1) this.setReportActive(res.data[0])
           } else this.activeReport = { id: -1 }
           this.loadingCount++
         })
@@ -452,6 +588,9 @@ export default {
           this.loadingCount++
           this.$_alert.error(err)
         })
+    },
+    setReportActive (e) {
+      this.activeReport = Object.assign({}, JSON.parse(JSON.stringify(e)))
     },
     loadRecaptProject () {
       this.$_api
@@ -545,8 +684,24 @@ export default {
           this.getAllData()
         })
         .catch((err) => {
-          console.log(err)
+          this.$_alert.error(err)
         })
+    },
+    deleteReport (data) {
+      this.$_alert.confirm('Hapus Permanen', 'Laporan yang sudah dihapus tidak dapat dikembalikan, lanjutkan ?').then((result) => {
+        if (result.isConfirmed) {
+          this.$_api
+            .delete('report-potential-issues', { data: data })
+            .then((res) => {
+              this.activeReport = null
+              this.getAllData()
+              this.$_alert.success(null, res.message)
+            })
+            .catch((err) => {
+              this.$_alert.error(err)
+            })
+        }
+      })
     },
     bgMitigationStatus (prefix, e) {
       if (e === 'on_going') return prefix + '-warning'

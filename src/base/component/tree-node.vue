@@ -1,10 +1,10 @@
 <template lang="">
-  <div class="node-wrapper position-relative" :class="[node.child && node.child.length ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', node.child && node.child.length ? 'has-children' : '']">
-    <div @click="!checklist? active = !active : ''" :class="[node.child && node.child.length ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
-      <i v-if="node.child && node.child.length" @click="checklist? active = !active : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
+  <div class="node-wrapper position-relative" :class="[(node.child && node.child.length) || checklist ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', (node.child && node.child.length) || checklist ? 'has-children' : '']">
+    <div @click="!checklist ? (active = !active) : ''" :class="[(node.child && node.child.length) || checklist ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
+      <i v-if="node.child && node.child.length" @click="checklist ? (active = !active) : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
       <span v-else class="d-block pl-4"></span>
       <div v-if="checklist" class="checkbox-list mb-0 mt-2">
-        <label class="checkbox checkbox-lg align-items-start">
+        <label :class="levelClass[level]" class="checkbox checkbox-lg align-items-start">
           <input v-model="selected" type="checkbox" :name="node.code + '-name'" />
           <span></span>
           <div class="d-flex flex-column">
@@ -14,13 +14,22 @@
         </label>
       </div>
       <div v-else class="d-flex flex-column">
-        <span class="title font-weight-bold"> <template v-if="node.code">{{ node.code }} - </template>{{ node.name }}</span>
+        <span class="title font-weight-bold">
+          <template v-if="node.code">{{ node.code }} -</template>
+          <template v-else>Tanggal</template>
+          {{ node.name | parse(node.code ? '' : 'longDate') }}
+        </span>
+        <div>
         <span v-if="node.code" style="flex: 1 0 auto" class="font-size-sm text-muted pr-1">Kode : {{ node.code }}</span>
+        <span v-else style="flex: 1 0 auto" class="font-size-sm text-muted pr-1">Jumlah Mitigasi : {{node.child.length}}</span>
+        <span v-if="node.status_code" :class="bgMitigationStatus('text', node.status_code)" style="flex: 1 0 auto" class="font-size-sm pr-1">{{ node.status_code | parse('status_code_mitigation') }}</span>
+        </div>
       </div>
     </div>
     <template v-if="node.child && node.child.length">
       <template v-for="(n, i) in node.child">
-        <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level+1" :checked="selected" :checklist="n.child ? checklist : false" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" />
+        <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level + 1" :checked="selected" :checklist="checklist" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" />
+        <!-- <tree-node v-show="active" @selected="$emit('selected', $event)" :getLevel="getLevel" :level="level + 1" :checked="selected" :checklist="n.child ? checklist : false" :last="i + 1 === node.child.length" :node="n" :key="i + '-nodes'" /> -->
       </template>
     </template>
   </div>
@@ -33,13 +42,24 @@ export default {
     last: { required: false },
     checklist: { required: false },
     checked: { required: false },
-    level: { required: false, default () { return 0 } },
-    getLevel: { required: false, default () { return 0 } }
+    level: {
+      required: false,
+      default () {
+        return 0
+      }
+    },
+    getLevel: {
+      required: false,
+      default () {
+        return 0
+      }
+    }
   },
   data () {
     return {
       active: false,
-      selected: false
+      selected: false,
+      levelClass: ['checkbox-primary', 'checkbox-info', 'checkbox-warning', 'checkbox-danger']
     }
   },
   watch: {
@@ -50,7 +70,7 @@ export default {
       }
     },
     selected: {
-      immediate: false,
+      immediate: true,
       handler (e) {
         this.checkLevel(e)
       }
@@ -58,7 +78,12 @@ export default {
   },
   methods: {
     checkLevel (e) {
-      if (this.level === this.getLevel) this.$emit('selected', {selected: e, data: this.node})
+      if (this.level === this.getLevel) this.$emit('selected', { selected: e, data: this.node })
+    },
+    bgMitigationStatus (prefix, e) {
+      if (e === 'on_going') return prefix + '-warning'
+      else if (e === 'close') return prefix + '-success'
+      else return prefix + '-danger'
     }
   }
 }
