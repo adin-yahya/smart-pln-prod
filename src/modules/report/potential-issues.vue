@@ -76,17 +76,18 @@ export default {
             }
           },
           { id: 'location_code', label: 'Kode Lokasi', methods: { list: true, detail: true, create: { validation: ['required'] }, update: { validation: ['required'] }, filter: false } },
+
           {
-            id: 'unit_id',
-            label: 'Unit Supervisor',
+            id: 'pst_id',
+            label: 'PST',
             methods: {
-              list: { view_data: 'rel_unit_id' },
-              detail: { view_data: 'rel_unit_id' },
+              list: { view_data: 'rel_pst_id' },
+              detail: { view_data: 'rel_pst_id' },
               create: false,
               update: false,
               filter: {
-                setter: 'units',
-                getter: 'units',
+                setter: 'pst',
+                getter: 'pst',
                 type: 'lookup-radio',
                 class: 'col-auto min-w-250px',
                 option: {
@@ -100,16 +101,16 @@ export default {
             }
           },
           {
-            id: 'pst_id',
-            label: 'PST',
+            id: 'unit_id',
+            label: 'Unit Supervisor',
             methods: {
-              list: { view_data: 'rel_pst_id' },
-              detail: { view_data: 'rel_pst_id' },
+              list: { view_data: 'rel_unit_id' },
+              detail: { view_data: 'rel_unit_id' },
               create: false,
               update: false,
               filter: {
-                setter: 'pst',
-                getter: 'pst',
+                setter: 'units',
+                getter: 'units',
                 type: 'lookup-radio',
                 class: 'col-auto min-w-250px',
                 option: {
