@@ -198,7 +198,7 @@
         <div class="row">
           <div v-for="(v, y) in fields" :key="y + '-visibility'" class="col-lg-6 col-sm-12">
             <div class="form-group row align-items-center">
-              <label :for="v.data" class="col-lg-8 col-9 col-form-label text-capitalize">{{ v.label }}</label>
+              <label :for="v.data" class="col-lg-8 col-9 col-form-label text-capitalize">{{ v.label | parse('noBR') }}</label>
               <div class="col-3">
                 <span class="switch switch-icon">
                   <label>
