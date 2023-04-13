@@ -98,8 +98,28 @@ export default {
           // disabled Temp Field
           { id: 'email', label: 'Email', methods: { list: true, detail: true, create: false, update: false, filter: false } },
           { id: 'img_photo_user', label: 'Foto Pengguna', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          {
+            id: 'status_code',
+            data: 'status_code',
+            label: 'Status Verifikasi',
+            placeholder: null,
+            methods: {
+              list: {
+                order: true,
+                class: { email_unverified: 'badge badge-info', user_nonactive: 'badge badge-warning', user_rejected: 'badge badge-danger' },
+                transform: 'capitalize'
+              },
+              detail: {
+                order: true,
+                class: { email_unverified: 'badge badge-info', user_nonactive: 'badge badge-warning', user_rejected: 'badge badge-danger' },
+                transform: 'capitalize'
+              },
+              create: false,
+              update: false,
+              filter: false
+            }
+          },
           // disabled Field
-          { id: 'status_code', methods: { list: true, detail: true, create: false, update: false, filter: true } },
           { id: 'email_verified_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'last_login_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'employee_id', methods: { list: false, detail: false, create: false, update: false, filter: false } },
