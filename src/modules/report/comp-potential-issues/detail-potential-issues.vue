@@ -209,12 +209,13 @@
                 </div>
               </div>
             </div>
-            <hr />
-
-            <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
-              <i class="ri-add-circle-fill"></i>
-              Tambah Laporan Baru
-            </button>
+            <template v-if="$_sys.isAllowed(permission.create)">
+              <hr />
+              <button @click="$set(activeReport, 'id', -1)" class="btn btn-block btn-light-success font-size-sm font-weight-bold">
+                <i class="ri-add-circle-fill"></i>
+                Tambah Laporan Baru
+              </button>
+            </template>
           </div>
         </div>
       </div>
@@ -225,7 +226,9 @@
               <span class="card-label font-weight-bolder text-dark">Laporan Potensi Isu</span>
             </h3>
             <div class="card-toolbar">
-              <button v-if="activeReport.status_code === 'open'" @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
+              <template v-if="activeReport.status_code === 'open'">
+                <button v-if="$_sys.isAllowed(permission.delete)" @click="deleteReport(activeReport)" class="btn btn-outline-danger font-weight-bold font-size-sm">Hapus Laporan</button>
+              </template>
               <button v-else @click="loadHistory(activeReport)" class="btn btn-outline-info font-weight-bold font-size-sm">History Laporan</button>
             </div>
           </div>
@@ -310,7 +313,7 @@
         </div>
       </div>
       <div v-if="activeReport && activeReport.id === -1" class="col-8">
-        <div class="card card-custom">
+        <div v-if="$_sys.isAllowed(permission.create)" class="card card-custom">
           <div class="card-header align-items-center min-h-20px border-0 pt-5">
             <h3 class="card-title align-items-start flex-column m-0">
               <span class="card-label font-weight-bolder text-dark">Tambah Laporan Potensi Isu</span>
@@ -405,7 +408,7 @@
                     <p class="font-weight-normal font-size-sm text-dark-50 pb-2">Dilakukan oleh {{ selectedMitigation.rel_on_going_by }}, pada {{ selectedMitigation.on_going_at | parse('longDateTime') }}</p>
                   </template>
                   <template v-else>
-                    <template v-if="$_sys.isAllowed('update-mapping-potency-issues-mitigations')">
+                    <template v-if="$_sys.isAllowed(permission.update)">
                       <p class="font-weight-normal text-dark-50 pb-0 pt-1">
                         Klik
                         <span class="font-weight-bolder text-warning">Lakukan</span>
@@ -443,7 +446,7 @@
                     <span v-if="selectedMitigation.status_code === 'na'" :class="selectedMitigation.status_code === 'close' ? 'label-success' : 'label-danger'" class="label label-pill label-inline">{{ selectedMitigation.status_code === 'close' ? 'Mitigasi Selesai' : 'Not Applicable' }}</span>
                   </template>
                   <template v-else>
-                    <template v-if="$_sys.isAllowed('update-mapping-potency-issues-mitigations')">
+                    <template v-if="$_sys.isAllowed(permission.update)">
                       <p class="font-weight-normal text-dark-50 pb-0 pt-1">
                         Klik
                         <span class="font-weight-bolder text-success">Sudah Dilakukan</span>
@@ -472,7 +475,7 @@
           <div class="small-scroll pr-3" style="max-height:70vh;overflow-y:auto">
             <div class="timeline timeline-2">
               <div class="timeline-bar"></div>
-              <div v-for="(h, i) in historyList" :key="i+'-historyList'" class="timeline-item align-items-start">
+              <div v-for="(h, i) in historyList" :key="i + '-historyList'" class="timeline-item align-items-start">
                 <div class="timeline-badge" style="margin-top:.35em" :class="bgMitigationStatus('bg', h.status_code)"></div>
                 <div class="timeline-content d-flex align-items-start justify-content-between">
                   <span class="mr-3">
@@ -516,7 +519,12 @@ export default {
         level: 3
       },
       selectedTree: [],
-      historyList: null
+      historyList: null,
+      permission: {
+        create: 'save-potency-issue-mitigations',
+        update: 'update-mapping-potency-issues-mitigations',
+        delete: 'delete-report-potential-issues'
+      }
     }
   },
   watch: {
@@ -674,18 +682,22 @@ export default {
       else this.selectedTree = this.selectedTree.filter((x) => x.id !== e.data.id)
     },
     newReport () {
-      let form = Object.assign({}, this.createForm)
-      form.project_id = this.id
-      form.date = moment(new Date()).format('YYYY-MM-DD')
-      form.data = this.selectedTree
-      this.$_api
-        .post('custom/potency-issue/create', form)
-        .then((res) => {
-          this.getAllData()
-        })
-        .catch((err) => {
-          this.$_alert.error(err)
-        })
+      this.$_alert.confirm('Tambah Laporan', 'Laporan Tanggal ' + moment(new Date()).format('DD MMMM YYYY') + ' akan ditambahkan, lanjutkan ?').then((result) => {
+        if (result.isConfirmed) {
+          let form = Object.assign({}, this.createForm)
+          form.project_id = this.id
+          form.date = moment(new Date()).format('YYYY-MM-DD')
+          form.data = this.selectedTree
+          this.$_api
+            .post('custom/potency-issue/create', form)
+            .then((res) => {
+              this.getAllData()
+            })
+            .catch((err) => {
+              this.$_alert.error(err)
+            })
+        }
+      })
     },
     deleteReport (data) {
       this.$_alert.confirm('Hapus Permanen', 'Laporan yang sudah dihapus tidak dapat dikembalikan, lanjutkan ?').then((result) => {

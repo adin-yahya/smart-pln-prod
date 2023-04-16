@@ -16,10 +16,11 @@
               <h2 class="text-center font-weight-bolder text-dark font-size-h2 font-size-h1-lg mb-10">Proses Persetujuan</h2>
               <p class="font-weight-bold font-size-h5 text-muted">Saat ini data anda sedang dalam proses persetujuan oleh Admin Pusmanpro</p>
               <!-- <p class="font-weight-bold font-size-h5 text-muted">Konfirmasi persetujuan akan terkirim otomatis ke email anda dalam kurun waktu 2x24 jam.</p> -->
+              <template v-if="user.departement.contact_pic" >
               <p class="font-weight-bold font-size-h5 text-muted">Untuk informasi atau pertanyaan lebih lanjut, silahkan menuju Narahubung berikut :</p>
               <!-- <hr class="mt-15"> -->
-              <div v-if="user.departement.contact_pic" class="form-group mt-10">
-                <label class="font-weight-bold font-size-h5 text-muted">PIC Departemen</label>
+              <div class="form-group mt-10">
+                <label class="font-weight-bold font-size-h5 text-muted">PIC Pusmanpro</label>
                 <div class="input-group input-group-lg">
                   <input type="text" readonly class="form-control text-muted" placeholder="Recipient's username" :value="user.departement.contact_pic" aria-describedby="basic-addon2">
                   <div id="tooltip-copy" class="input-group-append pointer" v-clipboard:copy="user.departement.contact_pic.split('-')[1].trim()" v-clipboard:success="handleCopy">
@@ -30,6 +31,7 @@
                 </div>
                 <b-tooltip triggers="click" :show.sync="isCopyed" target="tooltip-copy" placement="top"> Nomor PIC sudah dicopy </b-tooltip>
               </div>
+            </template>
               <router-link :to="{ path: '/login' }" type="button" class="btn btn-link font-weight-bolder font-size-h6 pr-8 pl-0 py-4 my-3 mr-3" data-wizard-type="action-prev">
                 <span class="svg-icon svg-icon-md mr-2">
                   <!--begin::Svg Icon | path:/metronic/theme/html/demo3/dist/assets/media/svg/icons/Navigation/Left-2.svg-->

@@ -303,8 +303,8 @@
           </div>
           <div class="pt-lg-0 pt-5 pb-15">
             <h3 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Pendaftaran Selesai</h3>
-            <div class="text-muted font-weight-bold font-size-h4">
-              Silahkan periksa Email Anda, atau
+            <div class="text-mutedX font-weight-bold font-size-h4">
+              Silahkan periksa <span class="text-danger">Email Anda</span>, atau
               <router-link :to="{ path: '/login' }" class="text-primary font-weight-bolder">Ke Halaman Login</router-link>
             </div>
           </div>

@@ -1,5 +1,8 @@
 <template>
   <tas-base-crud :config="config">
+    <template v-slot:list-table-action="data">
+      <a @click="changeUserStatus(data.rowData)" class="btn btn-icon btn-danger btn-sm" v-b-tooltip.viewport="'Klik untuk menonaktifkan pengguna'"> <i class="ri-shut-down-line"></i> </a>
+    </template>
     <template v-slot:detail-footer="data">
       <div v-if="data.rowData" class="row">
         <!-- <div class="col-lg-12" v-if="$_sys.isAllowed(mappingUnit.permission)">

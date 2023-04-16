@@ -112,7 +112,7 @@ export default {
           { id: 'img_photo_user', label: 'Foto Pengguna', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           // disabled Field
           { id: 'status_code', methods: { list: false, detail: false, create: false, update: false, filter: false } },
-          { id: 'email_verified_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
+          { id: 'email_verified_at', label: 'Tanggal Verifikasi Email', methods: { list: { transform: 'longDateTime' }, detail: { transform: 'longDateTime' }, create: false, update: false, filter: false } },
           { id: 'last_login_at', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'employee_id', methods: { list: false, detail: false, create: false, update: false, filter: false } },
           { id: 'id', methods: { list: false, detail: false, create: false, update: false, filter: false } },

@@ -1,6 +1,6 @@
 <template lang="">
   <div class="node-wrapper position-relative" :class="[(node.child && node.child.length) || checklist ? 'pl-9' : 'pl-10', last ? 'border-left-half-node' : 'border-left-dash-node', (node.child && node.child.length) || checklist ? 'has-children' : '']">
-    <div @click="!checklist ? (active = !active) : ''" :class="[(node.child && node.child.length) || checklist ? 'has-child pointer' : '', active ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
+    <div @click="!checklist ? (active = !active) : ''" :class="[(node.child && node.child.length) || checklist ? 'has-child pointer' : '', (node.child && node.child.length && active) ? 'has-child-active' : '']" class="position-relative horizontal-dash d-flex align-items-start" style="margin-left: -15px">
       <i v-if="node.child && node.child.length" @click="checklist ? (active = !active) : ''" :class="{ 'rotate-90': active }" style="transition: all 0.25s ease;" class="ri-arrow-right-s-fill position-relative text-primary ri-2x pr-1"></i>
       <span v-else class="d-block pl-4"></span>
       <div v-if="checklist" class="checkbox-list mb-0 mt-2">
@@ -75,6 +75,9 @@ export default {
         this.checkLevel(e)
       }
     }
+  },
+  mounted () {
+    this.active = this.checklist && !this.last
   },
   methods: {
     checkLevel (e) {

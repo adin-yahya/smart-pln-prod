@@ -156,15 +156,31 @@ export default {
               }
             }
           },
-          // {
-          //   id: 'register_unit_id',
-          //   label: 'Pendaftaran Unit',
-          //   methods: { list: { view_data: 'rel_register_unit_id' }, detail: { view_data: 'rel_register_unit_id' }, create: false, update: false, filter: false }
-          // },
           {
             id: 'register_pst_id',
             label: 'Pendaftaran PST',
             methods: { list: { view_data: 'rel_register_pst_id' }, detail: { view_data: 'rel_register_pst_id' }, create: false, update: false, filter: false }
+          },
+          {
+            id: 'status_code',
+            data: 'status_code',
+            label: 'Status Verifikasi',
+            placeholder: null,
+            methods: {
+              list: {
+                order: true,
+                class: { email_unverified: 'badge badge-info', user_nonactive: 'badge badge-warning', user_rejected: 'badge badge-danger' },
+                transform: 'capitalize'
+              },
+              detail: {
+                order: true,
+                class: { email_unverified: 'badge badge-info', user_nonactive: 'badge badge-warning', user_rejected: 'badge badge-danger' },
+                transform: 'capitalize'
+              },
+              create: false,
+              update: false,
+              filter: false
+            }
           }
         ]
       },

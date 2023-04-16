@@ -40,7 +40,7 @@
           <!-- <div v-else class="login-form login-signin py-11"> -->
             <div v-else class="login-form login-signin py-11"  style="max-width:400px">
               <h2 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">{{ title }}<br>&nbsp;</h2>
-              <p class="font-weight-bold font-size-h6 text-muted">Saat ini data anda sedang dalam proses persetujuan oleh Admin Departemen<br><br>Untuk informasi atau pertanyaan lebih lanjut, silahkan hubungi PIC Departemen masing-masing</p>
+              <p class="font-weight-bold font-size-h6 text-muted">Saat ini data anda sedang dalam proses persetujuan oleh Admin Pusmanpro<br><br>Untuk informasi atau pertanyaan lebih lanjut, silahkan hubungi PIC Pusmanpro masing-masing</p>
             </div>
           <!-- </div> -->
         </div>
