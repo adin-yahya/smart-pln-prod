@@ -10,10 +10,10 @@ node {
     docker.image('agung3wi/alpine-rsync:1.1').inside('-u root') {
          sshagent (credentials: ['zidan-dev']) {
              sh 'mkdir -p ~/.ssh'
-             sh 'ssh-keyscan -H "pusmanpro.id" > ~/.ssh/known_hosts'
-             sh "rsync -rav --delete ./dist/ pusmanpro@pusmanpro.id:/home/pusmanpro/pusmanpro.id/public/ --exclude=index.php --exclude=.htaccess"
-             //sh "ssh pusmanpro@pusmanpro.id 'rm /home/pusmanpro/pusmanpro.id/resources/views/home.blade.php'"
-             sh "ssh pusmanpro@pusmanpro.id 'mv /home/pusmanpro/pusmanpro.id/public/index.html /home/pusmanpro/pusmanpro.id/resources/views/home.blade.php'"
+             sh 'ssh-keyscan -H "smart.pusmanpro.id" > ~/.ssh/known_hosts'
+             sh "rsync -rav --delete ./dist/ pusmanpro@smart.pusmanpro.id:/home/pusmanpro/smart.pusmanpro.id/public/ --exclude=index.php --exclude=.htaccess"
+             // sh "ssh pusmanpro@smart.pusmanpro.id 'rm /home/pusmanpro/smart.pusmanpro.id/resources/views/home.blade.php'"
+             sh "ssh pusmanpro@smart.pusmanpro.id 'mv /home/pusmanpro/smart.pusmanpro.id/public/index.html /home/pusmanpro/smart.pusmanpro.id/resources/views/home.blade.php'"
          }
     }
 }
