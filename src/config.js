@@ -1,6 +1,6 @@
 const app = {
   name: 'SMART',
-  fullname: 'Sistem Mitigation All Risk Terintegrasi',
+  fullname: 'Sistem Mitigasi All Risk Terintegrasi',
   company: 'Pusat Manajemen Proyek (Pusmanpro)',
   guide: 'https://bit.ly/Panduan-SMART-Pusmanpro',
   site: 'https://pln.co.id/',

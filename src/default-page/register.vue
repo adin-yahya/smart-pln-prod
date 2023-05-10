@@ -321,7 +321,7 @@
         <h3 class="pt-lg-40 pl-lg-20 pb-lg-0 pl-10 py-20 m-0 d-flex justify-content-lg-start font-weight-boldest display5 display3-lg text-white">
           {{ $_config.name }}
           <br />
-          Sistem Mitigation
+          Sistem Mitigasi
           <br />
           All Risk Terintegrasi
           <br />
