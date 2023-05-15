@@ -28,7 +28,7 @@ const app = {
   },
   options: {
     allowRegister: true,
-    forgetPassword: false,
+    forgetPassword: true,
     autofill: false,
     myAction: false,
     asideRight: false,

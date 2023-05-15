@@ -65,23 +65,39 @@
       </div>
       <!--end: Aside Container-->
     </div>
-    <!--begin::Aside-->
-    <!--begin::Content-->
-    <div class="content order-1 order-lg-2 d-flex flex-column w-100 pb-0" style="background-color: #B1DCED;">
+    <div class="content order-1 order-lg-2 d-flex w-100 pb-0 aside-bg align-content-center justify-content-center">
       <!--begin::Title-->
-      <div class="d-flex flex-column justify-content-center text-center pt-lg-40 pt-md-5 pt-sm-5 px-lg-0 pt-5 px-7">
-        <h3 class="display4 font-weight-bolder my-7 text-dark" style="color: #986923;">{{ $_config.name }}</h3>
-        <p class="font-weight-bolder font-size-h2-md font-size-lg text-dark opacity-70">Safety Management SIER<br>PT Surabaya Industrial Estate Rungkut</p>
+      <div class="d-flex flex-fill flex-column align-self-center justify-content-center text-center pt-lg-0 pt-md-5 pt-sm-5 px-lg-0 pt-5 px-7">
+        <h3 class="display2 font-weight-bolder text-white mb-2" style="color: #986923;">Aplikasi {{ $_config.name }}</h3>
+        <h3 v-if="$_config.fullname" class="display4 font-weight-normal mb-6 pb-6 text-white" style="color: #986923;border-bottom:3px solid #fff;letter-spacing: .18rem;">{{ $_config.fullname }}</h3>
+        <p class="font-weight-normal font-size-h2-md font-size-lg text-white text-italic">{{ $_config.company }}</p>
       </div>
       <!--end::Title-->
       <!--begin::Image-->
-      <div class="content-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url(/static/img/qhse/login-side.svg);"></div>
+      <!-- <div class="content-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-center bgi-position-x-center" style="background-image: url(/static/img/default/login.svg);"></div> -->
       <!--end::Image-->
     </div>
-    <!--end::Content-->
   </div>
 </template>
 <style scoped>
+  .aside-bg {
+    background-image: url('/static/img/default/aset_login-2.svg');
+    background-color: var(--primary);
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    background-size: cover;
+    /* background-position: right bottom; */
+    background-position: center center;
+  }
+  .aside-sub-bg {
+    background-image: url('/static/img/default/login.svg');
+    background-color: var(--primary);
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    background-size: cover;
+    /* background-position: right bottom; */
+    background-position: center center;
+  }
   .login.login-2 .content .content-img {
     min-height: 450px;
   }
