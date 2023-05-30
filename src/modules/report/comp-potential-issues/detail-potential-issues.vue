@@ -345,7 +345,7 @@
             </div>
             <span class="font-size-lg font-weight-bolder text-uppercase">Pilih Risk Register :</span>
             <div v-for="(n, i) in treeData" class="pl-0" :key="i + '-nodes'">
-              <tree-node :checked="!reportList.length" @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
+              <tree-node :disabledLevel="reportList.length? [] : [0]" :checked="!reportList.length" @selected="wrapSelectedData($event)" :getLevel="2" :level="0" :checklist="true" :last="i + 1 === treeData.length" :node="n" />
             </div>
             <hr />
             <button @click="newReport()" class="btn btn-block btn-success">Simpan & Tambahkan Laporan</button>
