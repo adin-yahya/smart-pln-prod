@@ -74,12 +74,8 @@ export default {
       if (this.node.child) {
         let check = this.node.child.length - this.node.child.filter((x) => x.selected).length
         if (check === this.node.child.length) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.selected = false
           return 0 // all child unchecked
         } else if (check === 0) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.selected = true
           return 1 // all child checked
         } else return 2 // some child unchecked
       } else return 1
@@ -98,17 +94,17 @@ export default {
         this.checkLevel(e)
         this.$set(this.node, 'selected', e)
       }
+    },
+    childStatus: {
+      immediate: false,
+      handler (e) {
+        if (e === 0) this.selected = false
+        else if (e === 1) this.selected = true
+        else {
+          // do nothing
+        }
+      }
     }
-    // childStatus: {
-    //   immediate: false,
-    //   handler (e) {
-    //     if (e === 0) this.selected = false
-    //     else if (e === 1) this.selected = true
-    //     else {
-    //       // do nothing
-    //     }
-    //   }
-    // }
   },
   mounted () {
     this.active = this.checklist && !this.last
