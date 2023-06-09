@@ -97,7 +97,7 @@
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Risk Register</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_isu | parse('number') }}</span>
-              <div @click="redirect('m-issue-categories')" class="pointer d-flex flex-fill align-items-center">
+              <div @click="redirect('m-issue')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>
@@ -105,7 +105,7 @@
             <div style="flex: 1 1 0px" class="text-white min-w-150px px-5">
               <span class="d-block font-size-h6 font-weight-bold">Sub Risk Register</span>
               <span class="d-block font-size-h3 font-weight-bolder mb-2">{{ api.statistic.data.master.total_sub_isu | parse('number') }}</span>
-              <div @click="redirect('potential-issues')" class="pointer d-flex flex-fill align-items-center">
+              <div @click="redirect('m-sub-issues')" class="pointer d-flex flex-fill align-items-center">
                 <span class="font-size-sm font-weight-light">More Info</span>
                 <i class="ri-arrow-right-circle-line font-size-sm pl-3"></i>
               </div>

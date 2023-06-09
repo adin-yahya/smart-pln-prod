@@ -20,7 +20,6 @@ export default {
           delete: 'delete-m-mitigations'
         },
         fields: [
-          { id: 'code', label: 'Kode Mitigasi', methods: { list: true, detail: true, create: false, update: false, filter: false } },
           {
             id: 'category_id',
             label: 'Kategori Potensi Isu',
@@ -139,6 +138,7 @@ export default {
               }
             }
           },
+          { id: 'code', label: 'Kode Mitigasi', methods: { list: true, detail: true, create: false, update: false, filter: false } },
           { id: 'name', label: 'Nama Mitigasi', methods: { list: true, detail: true, create: { validation: ['required'] }, update: { validation: ['required'] }, filter: false } },
           { id: 'description', label: 'Keterangan', methods: { create: { type: 'textarea' }, update: { type: 'textarea' } } },
           { id: 'reference', label: 'Referensi', methods: { list: true, detail: true, create: true, update: true, filter: false } },
