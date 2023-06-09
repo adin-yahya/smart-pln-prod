@@ -216,33 +216,75 @@ export default {
               }
             }
           },
+          // {
+          //   id: 'urgency_id',
+          //   label: 'Urgensi Proyek',
+          //   methods: {
+          //     create: {
+          //       setter: 'm-project-urgency',
+          //       getter: 'm-project-urgency',
+          //       type: 'lookup-radio',
+          //       class: 'col-auto min-w-250px',
+          //       option: {
+          //         list_pointer: {
+          //           label: 'name',
+          //           code: 'id',
+          //           display: ['name', 'description']
+          //         }
+          //       }
+          //     },
+          //     update: {
+          //       setter: 'm-project-urgency',
+          //       getter: 'm-project-urgency',
+          //       type: 'lookup-radio',
+          //       class: 'col-auto min-w-250px',
+          //       option: {
+          //         list_pointer: {
+          //           label: 'name',
+          //           code: 'id',
+          //           display: ['name', 'description']
+          //         }
+          //       }
+          //     },
+          //     filter: {
+          //       setter: 'm-project-urgency',
+          //       getter: 'm-project-urgency',
+          //       type: 'lookup-radio',
+          //       option: {
+          //         list_pointer: {
+          //           label: 'name',
+          //           code: 'id',
+          //           display: ['name', 'description']
+          //         }
+          //       }
+          //     }
+          //   }
+          // },
           {
-            id: 'urgency_id',
+            id: 'child_data_mapping_project_urgency',
             label: 'Urgensi Proyek',
             methods: {
               create: {
                 setter: 'm-project-urgency',
                 getter: 'm-project-urgency',
-                type: 'lookup-radio',
-                class: 'col-auto min-w-250px',
+                type: 'lookup-checkbox',
+                validation: ['required'],
                 option: {
+                  filterAPI: { active: 1, sort_by: 'name', sort: 'ASC' },
                   list_pointer: {
-                    label: 'name',
-                    code: 'id',
-                    display: ['name', 'description']
+                    label: 'name', code: 'id', display: ['name']
                   }
                 }
               },
               update: {
                 setter: 'm-project-urgency',
                 getter: 'm-project-urgency',
-                type: 'lookup-radio',
-                class: 'col-auto min-w-250px',
+                type: 'lookup-checkbox',
+                validation: ['required'],
                 option: {
+                  filterAPI: { active: 1, sort_by: 'name', sort: 'ASC' },
                   list_pointer: {
-                    label: 'name',
-                    code: 'id',
-                    display: ['name', 'description']
+                    label: 'name', code: 'id', display: ['name']
                   }
                 }
               },
@@ -250,13 +292,21 @@ export default {
                 setter: 'm-project-urgency',
                 getter: 'm-project-urgency',
                 type: 'lookup-radio',
+                class: 'min-w-200px',
                 option: {
+                  filterAPI: { active: 1, sort_by: 'name', sort: 'ASC' },
                   list_pointer: {
-                    label: 'name',
-                    code: 'id',
-                    display: ['name', 'description']
+                    label: 'name', code: 'id', display: ['name']
                   }
                 }
+              },
+              list: {
+                class: 'min-w-250px',
+                view_data: 'child_data_mapping_project_urgency',
+                order: false
+              },
+              detail: {
+                view_data: 'child_data_mapping_project_urgency.name'
               }
             }
           },

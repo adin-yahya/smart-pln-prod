@@ -63,7 +63,7 @@ export default {
                 setter: 'employees',
                 getter: 'employees',
                 type: 'lookup-radio',
-                validation: ['required'],
+                validation: [],
                 option: {
                   filterAPI: { is_user: false, sort_by: 'fullname', sort: 'ASC', active: 1, is_employee_active: true },
                   list_pointer: {
