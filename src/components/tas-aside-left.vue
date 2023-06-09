@@ -3,7 +3,7 @@
     <div class="aside-primary d-flex flex-column align-items-center flex-row-auto bg-primary">
       <div class="aside-brand d-flex flex-column align-items-center flex-column-auto py-5 py-lg-7">
         <router-link :to="{ path: '/' }" class="d-flex flex-column">
-          <img :src="$_config.logo.md" alt="Logo APP" class="max-h-65px" />
+          <img :src="$_config.logo.md" alt="Logo APP" class="max-h-65px rounded" />
         </router-link>
       </div>
       <div class="aside-nav w-100 d-flex flex-column align-items-center flex-column-fluid py-5 scroll scroll-push scrolling-hide justify-content-start">
